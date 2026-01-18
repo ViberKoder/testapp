@@ -639,6 +639,62 @@ async function loadProfile() {
     }
 }
 
+// Handle referral parameter from URL
+async function handleReferral() {
+    const userId = getUserID();
+    if (!userId) {
+        console.log('No user ID, skipping referral handling');
+        return;
+    }
+    
+    // Check URL parameter for ref
+    const urlParams = new URLSearchParams(window.location.search);
+    const referrerId = urlParams.get('ref');
+    
+    if (!referrerId) {
+        console.log('No ref parameter in URL');
+        return;
+    }
+    
+    try {
+        const referrerIdInt = parseInt(referrerId);
+        if (isNaN(referrerIdInt)) {
+            console.error('Invalid referrer ID:', referrerId);
+            return;
+        }
+        
+        // Check if user already has a referrer
+        // We'll check this by trying to set the referrer via API
+        console.log(`Attempting to set referrer ${referrerIdInt} for user ${userId}`);
+        
+        const response = await fetch(`${BOT_API_URL}/api/referral/set`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                user_id: userId,
+                referrer_id: referrerIdInt
+            })
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            if (data.success) {
+                console.log(`Successfully set referrer ${referrerIdInt} for user ${userId}`);
+            } else {
+                console.log(`User already has referrer: ${data.existing_referrer}`);
+            }
+        } else {
+            const errorData = await response.json();
+            console.error('Failed to set referrer:', errorData);
+        }
+    } catch (error) {
+        console.error('Error handling referral:', error);
+    }
+}
+
 // Initialize on page load
 function init() {
     console.log('Initializing app...');
@@ -656,6 +712,9 @@ function init() {
     
     // Setup share button
     setupShareButton();
+    
+    // Handle referral parameter (must be done early)
+    handleReferral();
     
     // Initialize TON Connect (will work when Profile page is opened)
     // Wait for libraries to load
