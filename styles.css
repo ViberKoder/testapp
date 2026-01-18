@@ -1472,3 +1472,33 @@ body {
 .eggs-tab-content.active {
     display: block;
 }
+
+/* Multi egg hatched by list styles */
+.hatched-by-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.hatched-by-item {
+    padding: 8px 12px;
+    background: rgba(0, 136, 204, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(0, 136, 204, 0.1);
+}
+
+.hatched-by-item .info-value-with-avatar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-badge.multi {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 12px;
+    margin-left: 8px;
+}
