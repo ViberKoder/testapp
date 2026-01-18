@@ -658,9 +658,9 @@ async function handleReferral() {
         return;
     }
     
-    // Check URL parameter for ref
+    // Check URL parameter for ref or referral (both supported)
     const urlParams = new URLSearchParams(window.location.search);
-    const referrerId = urlParams.get('ref');
+    const referrerId = urlParams.get('referral') || urlParams.get('ref');
     
     if (!referrerId) {
         console.log('No ref parameter in URL');
