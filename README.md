@@ -1,35 +1,21 @@
-# Hatch App - Mini App для Telegram
+# Test Mini App - Hatch Egg
 
-Mini app для отображения статистики по яйцам.
+**This is the TEST version of the mini-app. All changes should be tested here first before deploying to production.**
 
-## API URL
+## Setup
 
-Railway API: `https://web-production-11ef2.up.railway.app/api/stats`
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Deploy to Vercel (or your hosting platform)
 
-## Деплой на Vercel
+## Testing Workflow
 
-1. Подключите репозиторий к Vercel
-2. В настройках проекта добавьте переменную окружения:
-   - `API_URL` = `https://web-production-11ef2.up.railway.app/api/stats`
-3. Vercel автоматически запустит build script, который инжектит API_URL в HTML
+1. Make changes to this test mini-app
+2. Test thoroughly
+3. If everything works, copy changes to main mini-app repository
 
-## Локальная разработка
+## Important Notes
 
-```bash
-# Установите зависимости (если нужно)
-npm install
-
-# Запустите build
-npm run build
-
-# Откройте index.html в браузере
-```
-
-## Структура
-
-- `index.html` - главная страница
-- `styles.css` - стили
-- `app.js` - логика приложения
-- `build.js` - скрипт для инжекции API_URL
-- `vercel.json` - конфигурация Vercel
-- `package.json` - зависимости и скрипты
+- This mini-app uses the same codebase as the main mini-app
+- Update `API_URL` environment variable in Vercel to point to test bot API
+- Test all features before deploying to production
