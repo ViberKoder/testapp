@@ -544,10 +544,38 @@ function setupShareButton() {
             // Используем switchInlineQuery для открытия inline query с текстом "egg"
             // Это откроет inline query бота с текстом, без ссылки
             if (tg.switchInlineQuery) {
-                tg.switchInlineQuery('egg', { query: 'egg' });
+                // Правильный формат: switchInlineQuery(query, options)
+                // query - текст для inline query, options - опции (может быть пустым объектом)
+                try {
+                    tg.switchInlineQuery('egg', {});
+                } catch (e) {
+                    // Если не работает с опциями, пробуем без них
+                    try {
+                        tg.switchInlineQuery('egg');
+                    } catch (e2) {
+                        console.error('switchInlineQuery failed:', e2);
+                        // Fallback на копирование в буфер обмена
+                        navigator.clipboard.writeText(message).then(() => {
+                            if (tg.showAlert) {
+                                tg.showAlert('Message "@tohatchbot egg" copied to clipboard! Paste it in any chat.');
+                            } else {
+                                alert('Message "@tohatchbot egg" copied to clipboard! Paste it in any chat.');
+                            }
+                        }).catch(err => {
+                            console.error('Error copying to clipboard:', err);
+                            if (tg.showAlert) {
+                                tg.showAlert('Please copy this message manually: @tohatchbot egg');
+                            } else {
+                                alert('Please copy this message manually: @tohatchbot egg');
+                            }
+                        });
+                    }
+                }
             } else if (tg.openTelegramLink) {
                 // Fallback: используем deep link для открытия inline query
-                // Формат: https://t.me/botusername?start=inline_query
+                // НО: не добавляем URL в сообщение, только открываем inline query
+                // Формат для inline query: https://t.me/botusername?start=inline_query
+                // Но лучше использовать switchInlineQuery, если доступен
                 const inlineQueryUrl = `https://t.me/${botUsername}?start=egg`;
                 tg.openTelegramLink(inlineQueryUrl);
             } else {
@@ -650,7 +678,7 @@ async function loadProfile() {
     }
 }
 
-// Handle referral parameter from URL
+// Handle referral parameter from URL or Telegram start_param
 async function handleReferral() {
     const userId = getUserID();
     if (!userId) {
@@ -658,12 +686,26 @@ async function handleReferral() {
         return;
     }
     
-    // Check URL parameter for ref or referral (both supported)
-    const urlParams = new URLSearchParams(window.location.search);
-    const referrerId = urlParams.get('referral') || urlParams.get('ref');
+    // Получаем параметр startapp из Telegram WebApp или из URL
+    let referrerId = null;
+    
+    // Сначала пробуем получить из Telegram WebApp start_param (когда открыто через ?startapp=)
+    if (tg && tg.initDataUnsafe?.start_param) {
+        referrerId = tg.initDataUnsafe.start_param;
+        console.log('Got referrer from Telegram start_param:', referrerId);
+    }
+    
+    // Если не получили из start_param, пробуем из URL параметров
+    if (!referrerId) {
+        const urlParams = new URLSearchParams(window.location.search);
+        referrerId = urlParams.get('referral') || urlParams.get('ref') || urlParams.get('startapp');
+        if (referrerId) {
+            console.log('Got referrer from URL parameter:', referrerId);
+        }
+    }
     
     if (!referrerId) {
-        console.log('No ref parameter in URL');
+        console.log('No referrer parameter found (checked start_param and URL)');
         return;
     }
     
