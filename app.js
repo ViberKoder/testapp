@@ -541,45 +541,56 @@ function setupShareButton() {
         const botUsername = 'tohatchbot';
         
         if (tg) {
-            // Используем Telegram WebApp API для открытия бота с текстом сообщения
-            // Формируем ссылку для отправки сообщения боту напрямую через share
-            // Используем специальный формат для пересылки сообщения
-            const shareUrl = `https://t.me/share/url?url=${encodeURIComponent('https://t.me/' + botUsername)}&text=${encodeURIComponent(message)}`;
-            
-            // Используем openTelegramLink для открытия в Telegram приложении
-            if (tg.openTelegramLink) {
-                tg.openTelegramLink(shareUrl);
-            } else if (tg.openLink) {
-                // Fallback на openLink
-                tg.openLink(shareUrl, {
-                    try_instant_view: false
-                });
+            // Используем switchInlineQuery для открытия inline query с текстом "egg"
+            // Это откроет inline query бота с текстом, без ссылки
+            if (tg.switchInlineQuery) {
+                tg.switchInlineQuery('egg', { query: 'egg' });
+            } else if (tg.openTelegramLink) {
+                // Fallback: используем deep link для открытия inline query
+                // Формат: https://t.me/botusername?start=inline_query
+                const inlineQueryUrl = `https://t.me/${botUsername}?start=egg`;
+                tg.openTelegramLink(inlineQueryUrl);
             } else {
-                // Последний fallback
-                window.open(shareUrl, '_blank');
+                // Последний fallback: копируем текст в буфер обмена
+                navigator.clipboard.writeText(message).then(() => {
+                    if (tg.showAlert) {
+                        tg.showAlert('Message "@tohatchbot egg" copied to clipboard! Paste it in any chat.');
+                    } else {
+                        alert('Message "@tohatchbot egg" copied to clipboard! Paste it in any chat.');
+                    }
+                }).catch(err => {
+                    console.error('Error copying to clipboard:', err);
+                    if (tg.showAlert) {
+                        tg.showAlert('Please copy this message manually: @tohatchbot egg');
+                    } else {
+                        alert('Please copy this message manually: @tohatchbot egg');
+                    }
+                });
             }
         } else {
-            // Fallback для обычного браузера
-            if (navigator.share) {
-                navigator.share({
-                    title: 'Send Egg',
-                    text: message,
-                    url: `https://t.me/${botUsername}`
-                }).catch(err => {
-                    console.error('Error sharing:', err);
-                    // Копируем текст в буфер обмена как fallback
-                    navigator.clipboard.writeText(message).then(() => {
-                        alert('Message "@tohatchbot egg" copied to clipboard!');
-                    });
-                });
-            } else {
-                // Копируем текст в буфер обмена
+            // Fallback для обычного браузера - копируем текст в буфер обмена
+            if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(message).then(() => {
-                    alert('Message "@tohatchbot egg" copied to clipboard!');
+                    alert('Message "@tohatchbot egg" copied to clipboard! Paste it in any chat.');
                 }).catch(err => {
                     console.error('Error copying to clipboard:', err);
                     alert('Please copy this message manually: @tohatchbot egg');
                 });
+            } else {
+                // Fallback для старых браузеров
+                const textArea = document.createElement('textarea');
+                textArea.value = message;
+                textArea.style.position = 'fixed';
+                textArea.style.opacity = '0';
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    alert('Message "@tohatchbot egg" copied to clipboard! Paste it in any chat.');
+                } catch (err) {
+                    alert('Please copy this message manually: @tohatchbot egg');
+                }
+                document.body.removeChild(textArea);
             }
         }
     });
@@ -819,14 +830,72 @@ function displayEggResult(egg) {
     const resultDiv = document.getElementById('explorer-search-result');
     if (!resultDiv) return;
     
-    const hatchedStatus = egg.hatched_by ? 'hatched' : 'pending';
-    const hatchedText = egg.hatched_by ? 'Hatched' : 'Pending';
+    const isMulti = egg.is_multi || false;
+    const hatchedStatus = (isMulti ? egg.hatched_count > 0 : egg.hatched_by) ? 'hatched' : 'pending';
+    const hatchedText = (isMulti ? egg.hatched_count > 0 : egg.hatched_by) ? 'Hatched' : 'Pending';
     
     const timestampSent = egg.timestamp_sent ? new Date(egg.timestamp_sent).toLocaleString('en-US') : 'Unknown';
     const timestampHatched = egg.timestamp_hatched ? new Date(egg.timestamp_hatched).toLocaleString('en-US') : '—';
     
     const timeAgoSent = egg.timestamp_sent ? getTimeAgo(new Date(egg.timestamp_sent)) : '';
     const timeAgoHatched = egg.timestamp_hatched ? getTimeAgo(new Date(egg.timestamp_hatched)) : '';
+
+    // Формируем информацию о вылупивших для multi egg
+    let hatchedBySection = '';
+    if (isMulti) {
+        if (egg.hatched_by_list && egg.hatched_by_list.length > 0) {
+            const hatchedByList = egg.hatched_by_list.map(user => {
+                const username = user.username ? `@${user.username}` : `User ID: ${user.user_id}`;
+                const avatar = user.avatar ? `<img src="${user.avatar}" class="user-avatar" onerror="this.style.display='none'">` : '<div class="user-avatar-placeholder"></div>';
+                const onClick = user.username ? `searchUserByUsername('${user.username}')` : `viewUserEggs(${user.user_id}, '')`;
+                return `
+                    <div class="hatched-by-item">
+                        <div class="info-value-with-avatar">
+                            ${avatar}
+                            <span class="username-link" onclick="event.stopPropagation(); ${onClick}();">
+                                ${username}
+                            </span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            hatchedBySection = `
+                <div class="info-section">
+                    <div class="info-label">Hatched By (${egg.hatched_count}/${egg.max_hatches})</div>
+                    <div class="hatched-by-list">
+                        ${hatchedByList}
+                    </div>
+                </div>
+            `;
+        } else {
+            hatchedBySection = `
+                <div class="info-section">
+                    <div class="info-label">Hatched By</div>
+                    <div class="info-value">Not hatched yet (0/${egg.max_hatches})</div>
+                </div>
+            `;
+        }
+    } else if (egg.hatched_by) {
+        hatchedBySection = `
+            <div class="info-section">
+                <div class="info-label">Hatched By</div>
+                <div class="info-value-with-avatar">
+                    ${egg.hatched_by_avatar ? `<img src="${egg.hatched_by_avatar}" class="user-avatar" onerror="this.style.display='none'">` : '<div class="user-avatar-placeholder"></div>'}
+                    ${egg.hatched_by_username ? `
+                    <span class="username-link" onclick="event.stopPropagation(); searchUserByUsername('${egg.hatched_by_username}');">
+                        @${egg.hatched_by_username}
+                    </span>
+                    ` : `
+                    <span class="username-link" onclick="event.stopPropagation(); viewUserEggs(${egg.hatched_by}, '');">
+                        User ID: ${egg.hatched_by}
+                    </span>
+                    `}
+                </div>
+                <div class="info-subvalue">${timestampHatched}${timeAgoHatched ? ` (${timeAgoHatched})` : ''}</div>
+            </div>
+        `;
+    }
 
     resultDiv.innerHTML = `
         <div class="egg-detail-card">
@@ -835,8 +904,9 @@ function displayEggResult(egg) {
                     <div id="egg-avatar-animation" class="egg-avatar-animation"></div>
                 </div>
                 <div class="egg-detail-title">
-                    <h3>Egg #${egg.egg_id.substring(0, 8)}...</h3>
+                    <h3>${isMulti ? 'Multi ' : ''}Egg #${egg.egg_id.substring(0, 8)}...</h3>
                     <span class="egg-status-badge ${hatchedStatus}">${hatchedText}</span>
+                    ${isMulti ? `<span class="egg-status-badge multi">Multi (${egg.max_hatches})</span>` : ''}
                 </div>
             </div>
             
@@ -850,6 +920,7 @@ function displayEggResult(egg) {
                     <div class="info-label">Status</div>
                     <div class="info-value">
                         <span class="status-badge ${hatchedStatus}">${hatchedText}</span>
+                        ${isMulti ? `<span class="status-badge multi">${egg.hatched_count}/${egg.max_hatches} hatched</span>` : ''}
                     </div>
                 </div>
                 
@@ -870,24 +941,7 @@ function displayEggResult(egg) {
                     <div class="info-subvalue">${timestampSent}${timeAgoSent ? ` (${timeAgoSent})` : ''}</div>
                 </div>
                 
-                ${egg.hatched_by ? `
-                <div class="info-section">
-                    <div class="info-label">Hatched By</div>
-                    <div class="info-value-with-avatar">
-                        ${egg.hatched_by_avatar ? `<img src="${egg.hatched_by_avatar}" class="user-avatar" onerror="this.style.display='none'">` : '<div class="user-avatar-placeholder"></div>'}
-                        ${egg.hatched_by_username ? `
-                        <span class="username-link" onclick="event.stopPropagation(); searchUserByUsername('${egg.hatched_by_username}');">
-                            @${egg.hatched_by_username}
-                        </span>
-                        ` : `
-                        <span class="username-link" onclick="event.stopPropagation(); viewUserEggs(${egg.hatched_by}, '');">
-                            User ID: ${egg.hatched_by}
-                        </span>
-                        `}
-                    </div>
-                    <div class="info-subvalue">${timestampHatched}${timeAgoHatched ? ` (${timeAgoHatched})` : ''}</div>
-                </div>
-                ` : ''}
+                ${hatchedBySection}
                 
                 <div class="info-section">
                     <div class="info-label">Transaction Hash</div>
