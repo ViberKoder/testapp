@@ -158,7 +158,7 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    opacity: 1;
+    opacity: 0.2;
 }
 
 /* ========== APP CONTAINER ========== */
@@ -170,6 +170,47 @@ body {
     flex-direction: column;
     z-index: 1;
     overflow: hidden;
+}
+
+/* ========== PROFILE AVATAR BUTTON (Top Right) ========== */
+.profile-avatar-button {
+    position: fixed;
+    top: var(--spacing-lg);
+    right: var(--spacing-lg);
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-full);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    cursor: pointer;
+    padding: 0;
+    z-index: 200;
+    transition: all var(--transition-base);
+    overflow: hidden;
+}
+
+.profile-avatar-button:hover {
+    transform: scale(1.1);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.profile-avatar-button:active {
+    transform: scale(0.95);
+}
+
+.profile-avatar-small-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-avatar-small-animation {
+    width: 100%;
+    height: 100%;
 }
 
 /* ========== HOME PAGE (NOTCOIN TAP STYLE) ========== */
@@ -416,6 +457,10 @@ body {
     letter-spacing: -0.02em;
 }
 
+.page-title .highlight {
+    color: var(--ton-primary);
+}
+
 /* ========== CARDS (WALLET STYLE) ========== */
 .card {
     background: var(--ton-bg-section);
@@ -437,72 +482,122 @@ body {
     letter-spacing: -0.01em;
 }
 
-/* ========== TASK CARDS ========== */
-.task-card {
-    background: var(--ton-bg-section);
-    border-radius: var(--radius-lg);
-    border: none;
-    box-shadow: var(--shadow-sm);
-    padding: var(--spacing-lg);
-    margin-bottom: var(--spacing-md);
+/* ========== TASK SECTIONS ========== */
+.tasks-sections {
     display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-    transition: all var(--transition-base);
+    flex-direction: column;
+    gap: var(--spacing-lg);
 }
 
-.task-icon {
-    width: 48px;
-    height: 48px;
-    flex-shrink: 0;
+.task-section {
+    margin-bottom: var(--spacing-lg);
 }
 
-.task-info {
-    flex: 1;
-    min-width: 0;
-}
-
-.task-name {
+.task-section-title {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     font-size: 16px;
     font-weight: 600;
-    color: var(--ton-text-primary);
-    margin-bottom: var(--spacing-xs);
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    margin-bottom: var(--spacing-md);
     letter-spacing: -0.01em;
 }
 
-.task-reward {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--ton-text-secondary);
+/* ========== COMPACT TASK CARDS (Notcoin Style) ========== */
+.task-card {
+    background: var(--ton-bg-section);
+    border-radius: var(--radius-md);
+    border: none;
+    box-shadow: var(--shadow-sm);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    transition: all var(--transition-base);
+    min-height: 56px;
 }
 
-.task-button {
-    padding: var(--spacing-sm) var(--spacing-lg);
+.task-icon-small {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+}
+
+.task-info-compact {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.task-name-compact {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ton-text-primary);
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.task-reward-compact {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ton-text-secondary);
+    line-height: 1.2;
+}
+
+.task-button-compact {
+    padding: 6px 12px;
     border-radius: var(--radius-md);
     border: none;
     background: var(--ton-primary);
     color: #ffffff;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 12px;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     cursor: pointer;
     transition: all var(--transition-base);
     box-shadow: var(--shadow-sm);
     white-space: nowrap;
+    min-width: 70px;
 }
 
-.task-button:hover {
+.task-button-compact:hover {
     background: var(--ton-primary-dark);
 }
 
-.task-button:active {
-    transform: translateY(0);
+.task-button-compact:active {
+    transform: scale(0.95);
 }
 
-.task-button:disabled {
+.task-button-compact:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+.task-card-placeholder {
+    background: var(--ton-bg-section);
+    border-radius: var(--radius-md);
+    border: none;
+    box-shadow: var(--shadow-sm);
+    padding: var(--spacing-md);
+    text-align: center;
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.task-placeholder-text {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    font-size: 13px;
+    color: var(--ton-text-secondary);
+    opacity: 0.7;
 }
 
 /* ========== BOTTOM NAVIGATION (TON WALLET STYLE - EXTRA ROUNDED) ========== */
@@ -1005,7 +1100,15 @@ body {
     width: 100%;
 }
 
-#ton-connect-container {
+.ton-connect-section-explorer {
+    margin-top: var(--spacing-xl);
+    margin-bottom: var(--spacing-lg);
+    min-height: 60px;
+    width: 100%;
+}
+
+#ton-connect-container,
+#ton-connect-container-explorer {
     width: 100%;
     display: flex;
     justify-content: center;
@@ -1013,12 +1116,14 @@ body {
     align-items: center;
 }
 
-#ton-connect-container > * {
+#ton-connect-container > *,
+#ton-connect-container-explorer > * {
     width: 100% !important;
     max-width: 100% !important;
 }
 
-#ton-connect-container button {
+#ton-connect-container button,
+#ton-connect-container-explorer button {
     width: 100% !important;
     max-width: 100% !important;
     text-align: center !important;

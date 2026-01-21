@@ -197,9 +197,9 @@ async function loadAllAnimations() {
     await loadTGSAnimation('/egg.tgs', 'egg-animation');
     await loadTGSAnimation('/more.tgs', 'more-icon');
     await loadTGSAnimation('/chick.tgs', 'profile-icon');
+    await loadTGSAnimation('/chick.tgs', 'profile-avatar-small-icon');
     await loadTGSAnimation('/egg.tgs', 'nav-home-icon');
     await loadTGSAnimation('/more.tgs', 'nav-more-icon');
-    await loadTGSAnimation('/chick.tgs', 'nav-profile-icon');
     await loadTGSAnimation('/explorer-icon.tgs', 'nav-explorer-icon');
 }
 
@@ -248,7 +248,14 @@ function showPage(pageId) {
             }, 300);
         }
     } else if (pageId === 'explorer-page') {
-        loadExplorerMyEggs();
+        // Don't load My Eggs immediately - show only after search
+        // loadExplorerMyEggs();
+        // Initialize TON Connect in Explorer
+        if (!tonConnectUI) {
+            setTimeout(() => {
+                initTONConnectExplorer();
+            }, 300);
+        }
     }
 }
 
@@ -259,6 +266,15 @@ function setupNavigation() {
             showPage(pageId);
         });
     });
+    
+    // Profile avatar button
+    const profileAvatarBtn = document.getElementById('profile-avatar-btn');
+    if (profileAvatarBtn) {
+        profileAvatarBtn.addEventListener('click', () => {
+            const pageId = profileAvatarBtn.dataset.page;
+            showPage(pageId);
+        });
+    }
     
     // Handle Telegram back button
     if (tg) {
@@ -327,6 +343,56 @@ function initTONConnect() {
         });
     } catch (error) {
         console.error('Error initializing TON Connect:', error);
+    }
+}
+
+function initTONConnectExplorer() {
+    // Check if TON Connect UI is loaded
+    if (typeof window.TON_CONNECT_UI === 'undefined' || !window.TON_CONNECT_UI.TonConnectUI) {
+        console.error('TON Connect UI library not loaded');
+        setTimeout(() => {
+            if (typeof window.TON_CONNECT_UI !== 'undefined' && window.TON_CONNECT_UI.TonConnectUI) {
+                initTONConnectExplorer();
+            }
+        }, 500);
+        return;
+    }
+    
+    const container = document.getElementById('ton-connect-container-explorer');
+    if (!container) {
+        console.error('TON Connect Explorer container not found');
+        return;
+    }
+    
+    try {
+        tonConnectUI = new window.TON_CONNECT_UI.TonConnectUI({
+            manifestUrl: `${window.location.origin}/tonconnect-manifest.json`,
+            buttonRootId: 'ton-connect-container-explorer'
+        });
+        
+        console.log('TON Connect UI initialized in Explorer');
+        
+        tonConnectUI.connectionRestored.then(() => {
+            const account = tonConnectUI.wallet?.account;
+            if (account) {
+                walletAddress = account.address;
+                console.log('TON wallet connected:', walletAddress);
+            }
+        }).catch(err => {
+            console.log('No previous connection:', err);
+        });
+        
+        tonConnectUI.onStatusChange((wallet) => {
+            if (wallet) {
+                walletAddress = wallet.account.address;
+                console.log('TON wallet connected:', walletAddress);
+            } else {
+                walletAddress = null;
+                console.log('TON wallet disconnected');
+            }
+        });
+    } catch (error) {
+        console.error('Error initializing TON Connect in Explorer:', error);
     }
 }
 
@@ -835,9 +901,16 @@ async function searchEgg(eggId) {
 
     const searchQuery = eggId.trim();
     const resultDiv = document.getElementById('explorer-search-result');
+    const myEggsSection = document.getElementById('my-eggs-section');
     if (!resultDiv) return;
     
     resultDiv.innerHTML = '<div class="loading">Searching...</div>';
+    
+    // Show My Eggs section after first search (like tonscan ads)
+    if (myEggsSection && myEggsSection.style.display === 'none') {
+        myEggsSection.style.display = 'block';
+        loadExplorerMyEggs();
+    }
 
     try {
         let response;

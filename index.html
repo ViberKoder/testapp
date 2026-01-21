@@ -17,6 +17,13 @@
     </div>
     
     <div class="app-container">
+        <!-- Profile Avatar Button (Top Right) -->
+        <button class="profile-avatar-button" id="profile-avatar-btn" data-page="profile-page">
+            <div class="profile-avatar-small-container">
+                <div id="profile-avatar-small-icon" class="profile-avatar-small-animation"></div>
+            </div>
+        </button>
+        
         <!-- Home Page (Notcoin Tap Style) -->
         <div class="page active" id="home-page">
             <!-- Points Counter (Top Left) -->
@@ -48,30 +55,48 @@
                     <h2 class="page-title">More Eggs</h2>
                 </div>
 
-                <!-- Tasks Section -->
-                <div class="tasks-section">
-                    <h3 class="section-title">Complete Tasks</h3>
+                <!-- Tasks Sections -->
+                <div class="tasks-sections">
+                    <!-- Social Tasks -->
+                    <div class="task-section">
+                        <h3 class="task-section-title">Social</h3>
+                        <div class="task-card" id="subscribe-task">
+                            <div class="task-icon-small">
+                                <div id="more-icon" class="task-icon-animation"></div>
+                            </div>
+                            <div class="task-info-compact">
+                                <div class="task-name-compact">Subscribe to Hatch Egg</div>
+                                <div class="task-reward-compact">+20 Eggs</div>
+                            </div>
+                            <button class="task-button-compact" id="subscribe-btn">Complete</button>
+                        </div>
+                    </div>
                     
-                    <div class="task-card" id="subscribe-task">
-                        <div class="task-icon">
-                            <div id="more-icon" class="task-icon-animation"></div>
+                    <!-- Daily Tasks -->
+                    <div class="task-section">
+                        <h3 class="task-section-title">Daily</h3>
+                        <div class="task-card-placeholder">
+                            <div class="task-placeholder-text">More tasks coming soon...</div>
                         </div>
-                        <div class="task-info">
-                            <div class="task-name">Subscribe to Hatch Egg</div>
-                            <div class="task-reward">+20 Eggs</div>
+                    </div>
+                    
+                    <!-- Referral Tasks -->
+                    <div class="task-section">
+                        <h3 class="task-section-title">Referral</h3>
+                        <div class="task-card-placeholder">
+                            <div class="task-placeholder-text">Invite friends to earn more eggs</div>
                         </div>
-                        <button class="task-button" id="subscribe-btn">Complete</button>
                     </div>
                 </div>
 
             </div>
         </div>
 
-        <!-- Explorer Page -->
+        <!-- Egg Network Page (Explorer) -->
         <div class="page" id="explorer-page">
             <div class="page-content">
                 <div class="page-header">
-                    <h2 class="page-title">Eggchain Explorer</h2>
+                    <h2 class="page-title">Explore <span class="highlight">Egg Network</span></h2>
                 </div>
 
                 <div class="explorer-container">
@@ -81,7 +106,7 @@
                             <input 
                                 type="text" 
                                 id="explorer-egg-id-input" 
-                                placeholder="Enter egg ID or @username..."
+                                placeholder="Search egg ID, @username or address..."
                                 class="search-input-explorer"
                             />
                             <button id="explorer-search-btn" class="search-btn-explorer">Search</button>
@@ -93,8 +118,13 @@
                     <div id="user-eggs-history-container" class="explorer-eggs-list" style="display: none;">
                     </div>
                     
-                    <!-- My Eggs Section -->
-                    <div class="explorer-my-eggs-section" id="my-eggs-section">
+                    <!-- TON Connect Section -->
+                    <div class="ton-connect-section-explorer">
+                        <div id="ton-connect-container-explorer"></div>
+                    </div>
+                    
+                    <!-- My Eggs Section (at bottom, like ads on tonscan) -->
+                    <div class="explorer-my-eggs-section" id="my-eggs-section" style="display: none;">
                         <h3 class="section-title">My Eggs</h3>
                         <div id="explorer-my-eggs-list" class="explorer-eggs-list">
                             <div class="loading">Loading...</div>
@@ -115,11 +145,6 @@
                         <div class="profile-name" id="profile-name">User</div>
                         <div class="profile-id" id="profile-id">ID: -</div>
                     </div>
-                </div>
-
-                <!-- TON Connect Section -->
-                <div class="ton-connect-section">
-                    <div id="ton-connect-container"></div>
                 </div>
 
                 <!-- Eggs Balance Section -->
@@ -182,13 +207,7 @@
                 <div class="nav-icon-container">
                     <div id="nav-explorer-icon" class="nav-icon-animation"></div>
                 </div>
-                <span class="nav-label">Explorer</span>
-            </button>
-            <button class="nav-item" data-page="profile-page">
-                <div class="nav-icon-container">
-                    <div id="nav-profile-icon" class="nav-icon-animation"></div>
-                </div>
-                <span class="nav-label">Profile</span>
+                <span class="nav-label">Network</span>
             </button>
         </nav>
     </div>
