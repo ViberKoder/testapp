@@ -80,6 +80,9 @@ let currentPointsValue = 0;
 // Load statistics and update points
 async function loadStats() {
     const counterEl = document.getElementById('points-counter');
+    const eggsAvailableValueEl = document.getElementById('eggs-available-value');
+    const eggsAvailableMaxEl = document.getElementById('eggs-available-max');
+    
     if (!counterEl) {
         console.error('Counter element not found');
         return;
@@ -89,13 +92,15 @@ async function loadStats() {
     
     if (!userId) {
         console.warn('No user ID found');
-        counterEl.textContent = '0';
+        if (counterEl) counterEl.textContent = '0';
+        if (eggsAvailableValueEl) eggsAvailableValueEl.textContent = '0';
         currentPointsValue = 0;
         return;
     }
     
     // Show loading
-    counterEl.textContent = '...';
+    if (counterEl) counterEl.textContent = '...';
+    if (eggsAvailableValueEl) eggsAvailableValueEl.textContent = '...';
     
     try {
         console.log(`Fetching stats from: ${API_URL}?user_id=${userId}`);
@@ -115,17 +120,33 @@ async function loadStats() {
             const newPoints = calculatePoints(data);
             console.log(`Calculated points: ${newPoints} (my_eggs_hatched: ${data.my_eggs_hatched || 0}, hatched_by_me: ${data.hatched_by_me || 0})`);
             
-            // Update counter with animation
-            animateCounter(counterEl, 0, newPoints, 1000);
+            // Update points counter with animation
+            animateCounter(counterEl, currentPointsValue, newPoints, 1000);
             currentPointsValue = newPoints;
+            
+            // Update Available Eggs counter (Notcoin energy style)
+            if (eggsAvailableValueEl) {
+                // Use available_eggs from API (already calculated: FREE_EGGS_PER_DAY + paid_eggs - daily_sent)
+                const availableEggs = data.available_eggs !== undefined ? data.available_eggs : 
+                    Math.max(0, (data.free_eggs || 10) + (data.paid_eggs || 0) - (data.daily_eggs_sent || 0));
+                eggsAvailableValueEl.textContent = availableEggs.toLocaleString();
+            }
+            
+            // Update max eggs (default 100, can be from API if available)
+            if (eggsAvailableMaxEl) {
+                const maxEggs = data.max_eggs || 100;
+                eggsAvailableMaxEl.textContent = `/${maxEggs}`;
+            }
         } else {
             const errorText = await response.text();
             console.error('API error:', response.status, errorText);
-            counterEl.textContent = '0';
+            if (counterEl) counterEl.textContent = '0';
+            if (eggsAvailableValueEl) eggsAvailableValueEl.textContent = '0';
         }
     } catch (error) {
         console.error('Error loading stats:', error);
-        counterEl.textContent = '0';
+        if (counterEl) counterEl.textContent = '0';
+        if (eggsAvailableValueEl) eggsAvailableValueEl.textContent = '0';
     }
 }
 

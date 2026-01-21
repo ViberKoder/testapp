@@ -19,14 +19,28 @@
     <div class="app-container">
         <!-- Home Page (Notcoin Tap Style) -->
         <div class="page active" id="home-page">
-            <div class="counter-container">
-                <div class="counter" id="points-counter">0</div>
+            <!-- Points Counter (Top Left) -->
+            <div class="points-counter-container">
+                <div class="points-counter" id="points-counter">0</div>
             </div>
             
+            <!-- Available Eggs Counter (Top Right) -->
+            <div class="eggs-available-container">
+                <div class="eggs-available-icon">
+                    <img src="https://em-content.zobj.net/source/apple/419/egg_1f95a.png" alt="Egg" class="egg-emoji-icon">
+                </div>
+                <div class="eggs-available-counter">
+                    <div class="eggs-available-value" id="eggs-available-value">0</div>
+                    <div class="eggs-available-max" id="eggs-available-max">/100</div>
+                </div>
+            </div>
+            
+            <!-- Main Egg (Center) -->
             <div class="egg-container" id="egg-tap-container">
                 <div id="egg-animation" class="egg-image"></div>
             </div>
             
+            <!-- Share Button (Bottom) -->
             <div class="share-button-container">
                 <button class="share-button" id="share-egg-btn">
                     <img src="https://lime-gigantic-quelea-995.mypinata.cloud/ipfs/bafkreigkyk7a7453h4y5josptbv6itfwtihco44wrwuzr4fmflkttm25wa" alt="Share Egg" class="share-button-image">

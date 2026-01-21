@@ -277,37 +277,78 @@ body {
     }
 }
 
-/* ========== COUNTER (NOTCOIN STYLE) ========== */
-.counter-container {
+/* ========== POINTS COUNTER (Top Left - Notcoin Style) ========== */
+.points-counter-container {
     position: absolute;
-    top: var(--spacing-xl);
-    left: 50%;
-    transform: translateX(-50%);
+    top: var(--spacing-lg);
+    left: var(--spacing-lg);
     z-index: 10;
 }
 
-.counter {
+.points-counter {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     font-size: 48px;
     font-weight: 700;
     color: var(--ton-text-primary);
     letter-spacing: -0.02em;
     transition: all var(--transition-base);
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    padding: var(--spacing-sm) var(--spacing-lg);
-    border-radius: var(--radius-full);
-    border: 1px solid var(--glass-border);
-    box-shadow: var(--glass-shadow);
-    min-width: 120px;
-    text-align: center;
+    line-height: 1;
 }
 
-.counter.updated {
-    transform: translateX(-50%) scale(1.15);
-    color: var(--notcoin-yellow);
-    text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+.points-counter.updated {
+    transform: scale(1.15);
+    color: var(--ton-primary);
+}
+
+/* ========== AVAILABLE EGGS COUNTER (Top Right - Notcoin Energy Style) ========== */
+.eggs-available-container {
+    position: absolute;
+    top: var(--spacing-lg);
+    right: var(--spacing-lg);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.eggs-available-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.egg-emoji-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.eggs-available-counter {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1;
+}
+
+.eggs-available-value {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--ton-text-primary);
+    letter-spacing: -0.02em;
+    line-height: 1;
+}
+
+.eggs-available-max {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ton-text-secondary);
+    letter-spacing: 0;
+    line-height: 1;
+    margin-top: 2px;
 }
 
 /* ========== SHARE BUTTON (TON STYLE) ========== */
@@ -466,7 +507,7 @@ body {
     cursor: not-allowed;
 }
 
-/* ========== BOTTOM NAVIGATION (TON WALLET STYLE) ========== */
+/* ========== BOTTOM NAVIGATION (TON WALLET STYLE - EXTRA ROUNDED) ========== */
 .bottom-nav {
     position: fixed;
     bottom: 0;
@@ -478,13 +519,13 @@ body {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-top: none;
-    border-radius: var(--radius-nav) var(--radius-nav) 0 0; /* Rounded top corners like Wallet */
+    border-radius: 24px 24px 0 0; /* Extra rounded top corners like Wallet */
     display: flex;
     justify-content: space-around;
     align-items: center;
     padding: var(--spacing-sm) var(--spacing-md);
-    padding-top: 12px; /* Extra padding for rounded corners */
-    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+    padding-top: 16px; /* Extra padding for rounded corners */
+    padding-bottom: calc(16px + env(safe-area-inset-bottom));
     z-index: 100;
     box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.08);
 }
