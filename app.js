@@ -372,11 +372,26 @@ function initTONConnectTop() {
         
         console.log('TON Connect UI initialized (Top)');
         
+        // Wrap TON Connect button with custom design
+        setTimeout(() => {
+            const button = document.querySelector('#ton-connect-container-top button');
+            if (button && !button.querySelector('.tn-atom__button-content')) {
+                const buttonText = button.textContent || button.innerText || 'Connect Wallet';
+                button.innerHTML = `
+                    <div class="tn-atom__button-content">
+                        <span class="tn-atom__button-text">${buttonText}</span>
+                    </div>
+                    <span class="tn-atom__button-border"></span>
+                `;
+            }
+        }, 500);
+        
         tonConnectUI.connectionRestored.then(() => {
             const account = tonConnectUI.wallet?.account;
             if (account) {
                 walletAddress = account.address;
                 console.log('TON wallet connected:', walletAddress);
+                updateTONConnectButtonText('Connected');
             }
         }).catch(err => {
             console.log('No previous connection:', err);
@@ -386,13 +401,32 @@ function initTONConnectTop() {
             if (wallet) {
                 walletAddress = wallet.account.address;
                 console.log('TON wallet connected:', walletAddress);
+                updateTONConnectButtonText('Connected');
             } else {
                 walletAddress = null;
                 console.log('TON wallet disconnected');
+                updateTONConnectButtonText('Connect Wallet');
             }
         });
     } catch (error) {
         console.error('Error initializing TON Connect (Top):', error);
+    }
+}
+
+function updateTONConnectButtonText(text) {
+    const buttonText = document.querySelector('#ton-connect-container-top .tn-atom__button-text');
+    if (buttonText) {
+        buttonText.textContent = text;
+    } else {
+        const button = document.querySelector('#ton-connect-container-top button');
+        if (button && !button.querySelector('.tn-atom__button-content')) {
+            button.innerHTML = `
+                <div class="tn-atom__button-content">
+                    <span class="tn-atom__button-text">${text}</span>
+                </div>
+                <span class="tn-atom__button-border"></span>
+            `;
+        }
     }
 }
 

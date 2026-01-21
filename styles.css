@@ -136,7 +136,7 @@ body {
     line-height: 1.5;
 }
 
-/* ========== BACKGROUND (Wallet Style) ========== */
+/* ========== BACKGROUND (White with Green/Yellow Gradient) ========== */
 .background-container {
     position: fixed;
     top: 0;
@@ -145,7 +145,7 @@ body {
     height: 100%;
     z-index: 0;
     overflow: hidden;
-    background: var(--ton-bg-primary);
+    background: #ffffff;
 }
 
 .background-image {
@@ -154,11 +154,15 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('https://lime-gigantic-quelea-995.mypinata.cloud/ipfs/bafybeiagtdfjwrzce5g7nmvy7hkerkb7jc4wj2l32fvfdfvlysxkphtiuu');
+    background: linear-gradient(135deg, 
+        rgba(34, 197, 94, 0.08) 0%, 
+        rgba(255, 255, 255, 0.5) 30%, 
+        rgba(255, 255, 255, 0.5) 70%, 
+        rgba(234, 179, 8, 0.08) 100%);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    opacity: 0.35;
+    opacity: 1;
 }
 
 /* ========== APP CONTAINER ========== */
