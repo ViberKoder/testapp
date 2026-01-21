@@ -154,7 +154,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('https://optim.tildacdn.com/tild3135-6463-4562-b238-613064386263/-/format/webp/dsgfsdfgsdfg.png.webp');
+    background-image: url('https://lime-gigantic-quelea-995.mypinata.cloud/ipfs/bafybeiagtdfjwrzce5g7nmvy7hkerkb7jc4wj2l32fvfdfvlysxkphtiuu');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -219,7 +219,6 @@ body {
     justify-content: center;
     position: relative;
     transition: transform var(--transition-base);
-    filter: drop-shadow(0 20px 40px rgba(0, 136, 204, 0.4));
 }
 
 /* Tap Animation */
@@ -232,21 +231,7 @@ body {
     height: 100%;
 }
 
-/* Pulse Animation (Notcoin Style) */
-@keyframes pulse {
-    0%, 100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    50% {
-        transform: scale(1.05);
-        opacity: 0.9;
-    }
-}
-
-.egg-image {
-    animation: pulse 2s ease-in-out infinite;
-}
+/* Pulse Animation removed */
 
 /* Tap Ripple Effect */
 .egg-container::before {
@@ -481,8 +466,7 @@ body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     font-size: 16px;
     font-weight: 600;
-    color: #ffffff;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    color: var(--ton-text-primary);
     margin-bottom: var(--spacing-xs);
     letter-spacing: -0.01em;
 }
@@ -490,8 +474,7 @@ body {
 .task-reward {
     font-size: 14px;
     font-weight: 500;
-    color: #ffffff;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    color: var(--ton-text-secondary);
 }
 
 .task-button {
@@ -673,16 +656,14 @@ body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     font-size: 20px;
     font-weight: 700;
-    color: #ffffff;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    color: var(--ton-text-primary);
     margin-bottom: var(--spacing-xs);
     letter-spacing: -0.02em;
 }
 
 .profile-id {
     font-size: 14px;
-    color: #ffffff;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    color: var(--ton-text-secondary);
     opacity: 0.8;
 }
 
@@ -700,8 +681,7 @@ body {
 .stat-label {
     font-size: 14px;
     font-weight: 500;
-    color: #ffffff;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    color: var(--ton-text-secondary);
     margin-bottom: var(--spacing-sm);
     opacity: 0.9;
 }
@@ -710,8 +690,7 @@ body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     font-size: 32px;
     font-weight: 700;
-    color: #ffffff;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    color: var(--ton-text-primary);
     letter-spacing: -0.02em;
 }
 
@@ -989,8 +968,7 @@ body {
 .info-card p {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     font-size: 14px;
-    color: #ffffff;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    color: var(--ton-text-primary);
     line-height: 1.6;
     margin-bottom: var(--spacing-md);
 }
@@ -1014,16 +992,14 @@ body {
 .point-icon {
     font-size: 18px;
     font-weight: 700;
-    color: #ffffff;
+    color: var(--ton-primary);
     min-width: 32px;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .point-text {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     font-size: 14px;
-    color: #ffffff;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    color: var(--ton-text-primary);
 }
 
 /* ========== TON CONNECT ========== */
