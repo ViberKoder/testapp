@@ -277,38 +277,45 @@ body {
     }
 }
 
-/* ========== POINTS COUNTER (Top Left - Notcoin Style) ========== */
+/* ========== POINTS COUNTER (Center Top - Above Egg) ========== */
 .points-counter-container {
     position: absolute;
-    top: var(--spacing-lg);
-    left: var(--spacing-lg);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 10;
+    margin-top: -180px; /* Position above egg */
 }
 
 .points-counter {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     font-size: 48px;
     font-weight: 700;
-    color: var(--ton-text-primary);
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     letter-spacing: -0.02em;
     transition: all var(--transition-base);
     line-height: 1;
+    text-align: center;
 }
 
 .points-counter.updated {
-    transform: scale(1.15);
-    color: var(--ton-primary);
+    transform: translate(-50%, -50%) scale(1.15);
+    color: #ffffff;
 }
 
-/* ========== AVAILABLE EGGS COUNTER (Top Right - Notcoin Energy Style) ========== */
+/* ========== AVAILABLE EGGS COUNTER (Center Bottom - Below Egg) ========== */
 .eggs-available-container {
     position: absolute;
-    top: var(--spacing-lg);
-    right: var(--spacing-lg);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 10;
+    margin-top: 200px; /* Position below egg (adjust based on egg size) */
     display: flex;
     align-items: center;
     gap: var(--spacing-sm);
+    justify-content: center;
 }
 
 .eggs-available-icon {
@@ -323,12 +330,13 @@ body {
     width: 100%;
     height: 100%;
     object-fit: contain;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
 }
 
 .eggs-available-counter {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     line-height: 1;
 }
 
@@ -336,19 +344,23 @@ body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     font-size: 32px;
     font-weight: 700;
-    color: var(--ton-text-primary);
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     letter-spacing: -0.02em;
     line-height: 1;
+    text-align: center;
 }
 
 .eggs-available-max {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     font-size: 14px;
     font-weight: 500;
-    color: var(--ton-text-secondary);
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     letter-spacing: 0;
     line-height: 1;
     margin-top: 2px;
+    text-align: center;
 }
 
 /* ========== SHARE BUTTON (TON STYLE) ========== */
@@ -413,7 +425,8 @@ body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     font-size: 28px;
     font-weight: 700;
-    color: var(--ton-text-primary);
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     margin-bottom: var(--spacing-sm);
     letter-spacing: -0.02em;
 }
@@ -433,7 +446,8 @@ body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     font-size: 18px;
     font-weight: 600;
-    color: var(--ton-text-primary);
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     margin-bottom: var(--spacing-md);
     letter-spacing: -0.01em;
 }
@@ -467,7 +481,8 @@ body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     font-size: 16px;
     font-weight: 600;
-    color: var(--ton-text-primary);
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     margin-bottom: var(--spacing-xs);
     letter-spacing: -0.01em;
 }
@@ -475,8 +490,8 @@ body {
 .task-reward {
     font-size: 14px;
     font-weight: 500;
-    color: var(--notcoin-yellow);
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .task-button {
@@ -658,14 +673,16 @@ body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     font-size: 20px;
     font-weight: 700;
-    color: var(--ton-text-primary);
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     margin-bottom: var(--spacing-xs);
     letter-spacing: -0.02em;
 }
 
 .profile-id {
     font-size: 14px;
-    color: var(--text-secondary);
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     opacity: 0.8;
 }
 
@@ -683,7 +700,8 @@ body {
 .stat-label {
     font-size: 14px;
     font-weight: 500;
-    color: var(--text-secondary);
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     margin-bottom: var(--spacing-sm);
     opacity: 0.9;
 }
@@ -692,7 +710,8 @@ body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     font-size: 32px;
     font-weight: 700;
-    color: var(--ton-text-primary);
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     letter-spacing: -0.02em;
 }
 
@@ -869,7 +888,8 @@ body {
 .egg-detail-title h3 {
     font-size: 18px;
     font-weight: 600;
-    color: var(--text-light);
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     margin: 0 0 var(--spacing-xs) 0;
 }
 
@@ -907,7 +927,8 @@ body {
 .info-label {
     font-size: 12px;
     font-weight: 500;
-    color: var(--text-secondary);
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     text-transform: uppercase;
     letter-spacing: 0.5px;
     opacity: 0.9;
@@ -916,12 +937,14 @@ body {
 .info-value {
     font-size: 14px;
     font-weight: 500;
-    color: var(--text-light);
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .info-subvalue {
     font-size: 12px;
-    color: var(--text-secondary);
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     margin-top: 2px;
     opacity: 0.8;
 }
@@ -966,7 +989,8 @@ body {
 .info-card p {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     font-size: 14px;
-    color: var(--ton-text-primary);
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     line-height: 1.6;
     margin-bottom: var(--spacing-md);
 }
@@ -990,15 +1014,16 @@ body {
 .point-icon {
     font-size: 18px;
     font-weight: 700;
-    color: var(--notcoin-yellow);
+    color: #ffffff;
     min-width: 32px;
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .point-text {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     font-size: 14px;
-    color: var(--ton-text-primary);
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 /* ========== TON CONNECT ========== */
