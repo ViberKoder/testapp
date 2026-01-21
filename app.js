@@ -227,6 +227,16 @@ function showPage(pageId) {
         }
     });
     
+    // Show/hide profile avatar button (only on home page)
+    const profileAvatarBtn = document.getElementById('profile-avatar-btn');
+    if (profileAvatarBtn) {
+        if (pageId === 'home-page') {
+            profileAvatarBtn.style.display = 'block';
+        } else {
+            profileAvatarBtn.style.display = 'none';
+        }
+    }
+    
     // Update Telegram back button
     if (tg) {
         if (pageId === 'home-page') {
