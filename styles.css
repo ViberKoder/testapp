@@ -136,7 +136,7 @@ body {
     line-height: 1.5;
 }
 
-/* ========== BACKGROUND (Yellow, Gold, White Gradient) ========== */
+/* ========== BACKGROUND (Orange Radial Gradient) ========== */
 .background-container {
     position: fixed;
     top: 0;
@@ -154,25 +154,14 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, 
-        #ffd700 0%,      /* Gold */
-        #ffed4e 25%,    /* Bright yellow */
-        #fff9c4 50%,    /* Light yellow */
-        #ffffff 75%,    /* White */
-        #fffacd 100%    /* Lemon chiffon */
+    background: radial-gradient(
+        ellipse at top right,
+        #ff8c42 0%,        /* Deep orange top-right */
+        #ffa366 30%,       /* Medium orange */
+        #ffb380 60%,       /* Light orange */
+        #ffd4b3 100%       /* Light yellowish-orange bottom-left */
     );
-    background-size: 200% 200%;
-    animation: gradientShift 20s ease infinite;
     opacity: 1;
-}
-
-@keyframes gradientShift {
-    0%, 100% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
 }
 
 /* ========== APP CONTAINER ========== */
