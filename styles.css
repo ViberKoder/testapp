@@ -832,6 +832,7 @@ body {
     transition: all var(--transition-base);
     box-sizing: border-box;
     -webkit-appearance: none;
+    appearance: none;
 }
 
 .search-input-explorer:focus {
