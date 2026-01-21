@@ -2,53 +2,49 @@
    HATCH EGG - NOTCOIN/TON WALLET STYLE DESIGN
    ============================================ */
 
-/* ========== CSS VARIABLES (TON/Notcoin Style) ========== */
+/* ========== CSS VARIABLES (TON Wallet Style) ========== */
 :root {
-    /* TON Colors - Blue/Purple Gradients */
-    --ton-primary: #0088cc;
-    --ton-primary-dark: #006ba3;
-    --ton-secondary: #7c3aed;
-    --ton-accent: #a855f7;
-    
-    /* Gradients */
-    --gradient-ton: linear-gradient(135deg, #0088cc 0%, #7c3aed 100%);
-    --gradient-ton-reverse: linear-gradient(135deg, #7c3aed 0%, #0088cc 100%);
-    --gradient-ton-light: linear-gradient(135deg, rgba(0, 136, 204, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
-    
-    /* Notcoin Style Colors */
-    --notcoin-yellow: #ffd700;
-    --notcoin-orange: #ff8c00;
-    --notcoin-gold: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);
+    /* TON Wallet Colors */
+    --ton-primary: #3390ec;
+    --ton-primary-dark: #1e7cd6;
+    --ton-text-primary: #000000;
+    --ton-text-secondary: #707579;
+    --ton-text-hint: #707579;
+    --ton-bg-primary: #ffffff;
+    --ton-bg-secondary: #f4f4f5;
+    --ton-bg-section: #ffffff;
     
     /* Background Colors */
     --bg-primary: #ffffff;
-    --bg-secondary: #f8f9fa;
+    --bg-secondary: #f4f4f5;
     --bg-dark: #0a0e27;
     --bg-dark-secondary: #1a1f3a;
     
     /* Text Colors */
-    --text-primary: #111827;
-    --text-secondary: #6b7280;
+    --text-primary: #000000;
+    --text-secondary: #707579;
+    --text-hint: #707579;
     --text-light: #ffffff;
-    --text-dark: #0a0e27;
+    --text-dark: #000000;
     
     /* Glassmorphism */
-    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-bg: rgba(255, 255, 255, 0.95);
     --glass-bg-dark: rgba(26, 31, 58, 0.7);
-    --glass-border: rgba(255, 255, 255, 0.18);
-    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    --glass-border: rgba(0, 0, 0, 0.05);
+    --glass-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
     
     /* Shadows */
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
-    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
-    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.16);
-    --shadow-ton: 0 8px 32px rgba(0, 136, 204, 0.3);
+    --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.12);
+    --shadow-ton: 0 2px 12px rgba(51, 144, 236, 0.15);
     
-    /* Border Radius */
+    /* Border Radius - Wallet Style */
     --radius-sm: 8px;
     --radius-md: 12px;
     --radius-lg: 16px;
-    --radius-xl: 24px;
+    --radius-xl: 20px;
+    --radius-nav: 20px; /* Rounded top corners for nav */
     --radius-full: 9999px;
     
     /* Spacing */
@@ -60,8 +56,8 @@
     
     /* Transitions */
     --transition-fast: 0.15s ease;
-    --transition-base: 0.3s ease;
-    --transition-slow: 0.5s ease;
+    --transition-base: 0.2s ease;
+    --transition-slow: 0.3s ease;
 }
 
 /* Dark Theme Support */
@@ -91,7 +87,8 @@
     /* Dark theme navigation - TON Wallet style */
     .bottom-nav {
         background: rgba(26, 31, 58, 0.95);
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        border-top: none;
+        border-radius: var(--radius-nav) var(--radius-nav) 0 0;
     }
     
     .nav-item {
@@ -128,16 +125,18 @@ html, body {
 }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
     background: var(--bg-primary);
     color: var(--text-primary);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     user-select: none;
     touch-action: manipulation;
+    font-size: 16px;
+    line-height: 1.5;
 }
 
-/* ========== BACKGROUND (TON Style Gradient) ========== */
+/* ========== BACKGROUND (Wallet Style) ========== */
 .background-container {
     position: fixed;
     top: 0;
@@ -146,8 +145,7 @@ body {
     height: 100%;
     z-index: 0;
     overflow: hidden;
-    background: var(--gradient-ton);
-    opacity: 0.95;
+    background: var(--ton-bg-primary);
 }
 
 .background-image {
@@ -156,19 +154,11 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--gradient-ton);
-    background-size: 200% 200%;
-    animation: gradientShift 15s ease infinite;
-    opacity: 0.3;
-}
-
-@keyframes gradientShift {
-    0%, 100% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
+    background-image: url('https://optim.tildacdn.com/tild3135-6463-4562-b238-613064386263/-/format/webp/dsgfsdfgsdfg.png.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 1;
 }
 
 /* ========== APP CONTAINER ========== */
@@ -297,12 +287,11 @@ body {
 }
 
 .counter {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     font-size: 48px;
     font-weight: 700;
-    color: var(--text-light);
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    letter-spacing: -1px;
+    color: var(--ton-text-primary);
+    letter-spacing: -0.02em;
     transition: all var(--transition-base);
     background: var(--glass-bg);
     backdrop-filter: blur(20px);
@@ -380,58 +369,46 @@ body {
 }
 
 .page-title {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     font-size: 28px;
     font-weight: 700;
-    color: var(--text-light);
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    color: var(--ton-text-primary);
     margin-bottom: var(--spacing-sm);
+    letter-spacing: -0.02em;
 }
 
-/* ========== CARDS (GLASSMORPHISM TON STYLE) ========== */
+/* ========== CARDS (WALLET STYLE) ========== */
 .card {
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: var(--ton-bg-section);
     border-radius: var(--radius-lg);
-    border: 1px solid var(--glass-border);
-    box-shadow: var(--glass-shadow);
+    border: none;
+    box-shadow: var(--shadow-sm);
     padding: var(--spacing-lg);
     margin-bottom: var(--spacing-md);
     transition: all var(--transition-base);
 }
 
-.card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 40px rgba(0, 136, 204, 0.2);
-}
-
 .section-title {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     font-size: 18px;
     font-weight: 600;
-    color: var(--text-light);
+    color: var(--ton-text-primary);
     margin-bottom: var(--spacing-md);
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    letter-spacing: -0.01em;
 }
 
 /* ========== TASK CARDS ========== */
 .task-card {
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: var(--ton-bg-section);
     border-radius: var(--radius-lg);
-    border: 1px solid var(--glass-border);
-    box-shadow: var(--glass-shadow);
+    border: none;
+    box-shadow: var(--shadow-sm);
     padding: var(--spacing-lg);
     margin-bottom: var(--spacing-md);
     display: flex;
     align-items: center;
     gap: var(--spacing-md);
     transition: all var(--transition-base);
-}
-
-.task-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 40px rgba(0, 136, 204, 0.2);
 }
 
 .task-icon {
@@ -446,10 +423,12 @@ body {
 }
 
 .task-name {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     font-size: 16px;
     font-weight: 600;
-    color: var(--text-light);
+    color: var(--ton-text-primary);
     margin-bottom: var(--spacing-xs);
+    letter-spacing: -0.01em;
 }
 
 .task-reward {
@@ -463,19 +442,19 @@ body {
     padding: var(--spacing-sm) var(--spacing-lg);
     border-radius: var(--radius-md);
     border: none;
-    background: var(--gradient-ton);
-    color: var(--text-light);
+    background: var(--ton-primary);
+    color: #ffffff;
     font-weight: 600;
     font-size: 14px;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     cursor: pointer;
     transition: all var(--transition-base);
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-sm);
     white-space: nowrap;
 }
 
 .task-button:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-ton);
+    background: var(--ton-primary-dark);
 }
 
 .task-button:active {
@@ -498,12 +477,14 @@ body {
     background: rgba(244, 244, 245, 0.95); /* Light grey like TON Wallet */
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    border-top: none;
+    border-radius: var(--radius-nav) var(--radius-nav) 0 0; /* Rounded top corners like Wallet */
     display: flex;
     justify-content: space-around;
     align-items: center;
     padding: var(--spacing-sm) var(--spacing-md);
-    padding-bottom: calc(var(--spacing-sm) + env(safe-area-inset-bottom));
+    padding-top: 12px; /* Extra padding for rounded corners */
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));
     z-index: 100;
     box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.08);
 }
@@ -524,12 +505,14 @@ body {
     color: #707579; /* Dark grey for inactive items */
     max-width: 80px;
     position: relative;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
 }
 
 /* Active state - TON Wallet style with colored background */
 .nav-item.active {
     background: rgba(51, 144, 236, 0.15); /* Light blue background */
     color: #3390ec; /* Blue color for active */
+    border-radius: 12px; /* Rounded pill shape */
 }
 
 .nav-item.active .nav-label {
@@ -569,6 +552,8 @@ body {
     margin-top: 2px;
     color: #707579; /* Grey for inactive */
     transition: color var(--transition-base);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    letter-spacing: -0.01em;
 }
 
 .nav-item.active .nav-label {
@@ -599,12 +584,10 @@ body {
 
 /* ========== PROFILE PAGE ========== */
 .profile-header {
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: var(--ton-bg-section);
     border-radius: var(--radius-lg);
-    border: 1px solid var(--glass-border);
-    box-shadow: var(--glass-shadow);
+    border: none;
+    box-shadow: var(--shadow-sm);
     padding: var(--spacing-xl);
     margin-bottom: var(--spacing-lg);
     display: flex;
@@ -617,11 +600,11 @@ body {
     width: 80px;
     height: 80px;
     border-radius: var(--radius-full);
-    background: var(--gradient-ton);
+    background: var(--ton-primary);
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: var(--shadow-ton);
+    box-shadow: var(--shadow-sm);
     flex-shrink: 0;
 }
 
@@ -631,10 +614,12 @@ body {
 }
 
 .profile-name {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     font-size: 20px;
     font-weight: 700;
-    color: var(--text-light);
+    color: var(--ton-text-primary);
     margin-bottom: var(--spacing-xs);
+    letter-spacing: -0.02em;
 }
 
 .profile-id {
@@ -645,12 +630,10 @@ body {
 
 /* ========== STAT CARDS ========== */
 .stat-card {
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: var(--ton-bg-section);
     border-radius: var(--radius-lg);
-    border: 1px solid var(--glass-border);
-    box-shadow: var(--glass-shadow);
+    border: none;
+    box-shadow: var(--shadow-sm);
     padding: var(--spacing-lg);
     margin-bottom: var(--spacing-md);
     text-align: center;
@@ -665,10 +648,11 @@ body {
 }
 
 .stat-value {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     font-size: 32px;
     font-weight: 700;
-    color: var(--text-light);
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    color: var(--ton-text-primary);
+    letter-spacing: -0.02em;
 }
 
 .stat-row {
@@ -679,12 +663,10 @@ body {
 }
 
 .stat-item {
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: var(--ton-bg-section);
     border-radius: var(--radius-lg);
-    border: 1px solid var(--glass-border);
-    box-shadow: var(--glass-shadow);
+    border: none;
+    box-shadow: var(--shadow-sm);
     padding: var(--spacing-lg);
     text-align: center;
 }
@@ -704,23 +686,22 @@ body {
     flex: 1;
     padding: var(--spacing-md);
     border-radius: var(--radius-md);
-    border: 1px solid var(--glass-border);
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    color: var(--text-light);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: var(--ton-bg-section);
+    color: var(--ton-text-primary);
     font-size: 16px;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     outline: none;
     transition: all var(--transition-base);
 }
 
 .search-input-explorer:focus {
     border-color: var(--ton-primary);
-    box-shadow: 0 0 0 3px rgba(0, 136, 204, 0.1);
+    box-shadow: 0 0 0 3px rgba(51, 144, 236, 0.1);
 }
 
 .search-input-explorer::placeholder {
-    color: var(--text-secondary);
+    color: var(--ton-text-hint);
     opacity: 0.6;
 }
 
@@ -728,18 +709,18 @@ body {
     padding: var(--spacing-md) var(--spacing-lg);
     border-radius: var(--radius-md);
     border: none;
-    background: var(--gradient-ton);
-    color: var(--text-light);
+    background: var(--ton-primary);
+    color: #ffffff;
     font-weight: 600;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     cursor: pointer;
     transition: all var(--transition-base);
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-sm);
     white-space: nowrap;
 }
 
 .search-btn-explorer:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-ton);
+    background: var(--ton-primary-dark);
 }
 
 .search-btn-explorer:active {
@@ -934,21 +915,19 @@ body {
 }
 
 .info-card {
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: var(--ton-bg-section);
     border-radius: var(--radius-lg);
-    border: 1px solid var(--glass-border);
-    box-shadow: var(--glass-shadow);
+    border: none;
+    box-shadow: var(--shadow-sm);
     padding: var(--spacing-lg);
 }
 
 .info-card p {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     font-size: 14px;
-    color: var(--text-light);
+    color: var(--ton-text-primary);
     line-height: 1.6;
     margin-bottom: var(--spacing-md);
-    opacity: 0.9;
 }
 
 .points-info {
@@ -976,9 +955,9 @@ body {
 }
 
 .point-text {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     font-size: 14px;
-    color: var(--text-light);
-    opacity: 0.9;
+    color: var(--ton-text-primary);
 }
 
 /* ========== TON CONNECT ========== */
