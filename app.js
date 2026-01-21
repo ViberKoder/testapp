@@ -260,12 +260,6 @@ function showPage(pageId) {
     } else if (pageId === 'explorer-page') {
         // Don't load My Eggs immediately - show only after search
         // loadExplorerMyEggs();
-        // Initialize TON Connect in Explorer
-        if (!tonConnectUI) {
-            setTimeout(() => {
-                initTONConnectExplorer();
-            }, 300);
-        }
     }
 }
 
