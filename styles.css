@@ -136,7 +136,7 @@ body {
     line-height: 1.5;
 }
 
-/* ========== BACKGROUND (White with Green/Yellow Gradient) ========== */
+/* ========== BACKGROUND (Image with Saturation and Blur) ========== */
 .background-container {
     position: fixed;
     top: 0;
@@ -154,15 +154,14 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, 
-        rgba(34, 197, 94, 0.08) 0%, 
-        rgba(255, 255, 255, 0.5) 30%, 
-        rgba(255, 255, 255, 0.5) 70%, 
-        rgba(234, 179, 8, 0.08) 100%);
+    background-image: url('https://lime-gigantic-quelea-995.mypinata.cloud/ipfs/bafybeiagtdfjwrzce5g7nmvy7hkerkb7jc4wj2l32fvfdfvlysxkphtiuu');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    opacity: 1;
+    opacity: 0.8;
+    filter: saturate(1.2) blur(8px);
+    -webkit-filter: saturate(1.2) blur(8px);
+    transform: scale(1.05); /* Slight scale to hide blur edges */
 }
 
 /* ========== APP CONTAINER ========== */
@@ -1100,8 +1099,8 @@ body {
     top: var(--spacing-lg);
     right: var(--spacing-lg);
     z-index: 200;
-    width: 199px;
-    height: 51px;
+    min-width: 140px;
+    height: 48px;
 }
 
 #ton-connect-container-top {
@@ -1144,8 +1143,10 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 8px;
     background: var(--ton-primary);
-    border-radius: 8px;
+    border-radius: 24px;
+    padding: 0 20px;
     z-index: 2;
     transition: all var(--transition-base);
 }
@@ -1164,12 +1165,25 @@ body {
 /* Button Text */
 #ton-connect-container-top button .tn-atom__button-text,
 #ton-connect-container-top .tn-atom__button-text {
-    font-size: 19px !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif !important;
+    font-size: 16px !important;
     font-weight: 600 !important;
     color: #ffffff !important;
     letter-spacing: -0.01em;
     z-index: 3;
     position: relative;
+}
+
+/* TON Logo */
+#ton-connect-container-top .ton-logo {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTAiIGN5PSIxMCIgcj0iMTAiIGZpbGw9IiMwMDg4Q0MiLz4KPHBhdGggZD0iTTEwIDVMMTMgMTBIMTJWMTJIMTNWMTBIMTZMMTMgNVoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo=');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    flex-shrink: 0;
 }
 
 /* Button Border */
@@ -1181,7 +1195,7 @@ body {
     width: 100%;
     height: 100%;
     border: 2px solid var(--ton-primary);
-    border-radius: 8px;
+    border-radius: 24px;
     z-index: 1;
     transition: all var(--transition-base);
     opacity: 0.3;
@@ -1196,13 +1210,17 @@ body {
 
 /* Fallback for TON Connect UI generated button */
 #ton-connect-container-top button:not(:has(.tn-atom__button-content)) {
-    padding: 10px 16px !important;
-    border-radius: 8px !important;
+    padding: 12px 20px !important;
+    border-radius: 24px !important;
     background: var(--ton-primary) !important;
     color: #ffffff !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif !important;
     font-weight: 600 !important;
-    font-size: 19px !important;
+    font-size: 16px !important;
     box-shadow: var(--shadow-sm) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
 }
 
 #ton-connect-container-top button:not(:has(.tn-atom__button-content)):hover {

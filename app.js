@@ -377,9 +377,12 @@ function initTONConnectTop() {
             const button = document.querySelector('#ton-connect-container-top button');
             if (button && !button.querySelector('.tn-atom__button-content')) {
                 const buttonText = button.textContent || button.innerText || 'Connect Wallet';
+                // Extract "Connect" from text or use default
+                const connectText = buttonText.includes('Connect') ? 'Connect' : 'Connect';
                 button.innerHTML = `
                     <div class="tn-atom__button-content">
-                        <span class="tn-atom__button-text">${buttonText}</span>
+                        <span class="tn-atom__button-text">${connectText}</span>
+                        <span class="ton-logo"></span>
                     </div>
                     <span class="tn-atom__button-border"></span>
                 `;
@@ -416,13 +419,23 @@ function initTONConnectTop() {
 function updateTONConnectButtonText(text) {
     const buttonText = document.querySelector('#ton-connect-container-top .tn-atom__button-text');
     if (buttonText) {
-        buttonText.textContent = text;
+        // Keep "Connect" text, show logo
+        buttonText.textContent = text.includes('Connect') ? 'Connect' : 'Connect';
+        // Ensure logo is present
+        const buttonContent = buttonText.closest('.tn-atom__button-content');
+        if (buttonContent && !buttonContent.querySelector('.ton-logo')) {
+            const logo = document.createElement('span');
+            logo.className = 'ton-logo';
+            buttonContent.appendChild(logo);
+        }
     } else {
         const button = document.querySelector('#ton-connect-container-top button');
         if (button && !button.querySelector('.tn-atom__button-content')) {
+            const connectText = text.includes('Connect') ? 'Connect' : 'Connect';
             button.innerHTML = `
                 <div class="tn-atom__button-content">
-                    <span class="tn-atom__button-text">${text}</span>
+                    <span class="tn-atom__button-text">${connectText}</span>
+                    <span class="ton-logo"></span>
                 </div>
                 <span class="tn-atom__button-border"></span>
             `;
