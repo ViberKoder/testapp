@@ -346,6 +346,56 @@ function initTONConnect() {
     }
 }
 
+function initTONConnectTop() {
+    // Check if TON Connect UI is loaded
+    if (typeof window.TON_CONNECT_UI === 'undefined' || !window.TON_CONNECT_UI.TonConnectUI) {
+        console.error('TON Connect UI library not loaded');
+        setTimeout(() => {
+            if (typeof window.TON_CONNECT_UI !== 'undefined' && window.TON_CONNECT_UI.TonConnectUI) {
+                initTONConnectTop();
+            }
+        }, 500);
+        return;
+    }
+    
+    const container = document.getElementById('ton-connect-container-top');
+    if (!container) {
+        console.error('TON Connect Top container not found');
+        return;
+    }
+    
+    try {
+        tonConnectUI = new window.TON_CONNECT_UI.TonConnectUI({
+            manifestUrl: `${window.location.origin}/tonconnect-manifest.json`,
+            buttonRootId: 'ton-connect-container-top'
+        });
+        
+        console.log('TON Connect UI initialized (Top)');
+        
+        tonConnectUI.connectionRestored.then(() => {
+            const account = tonConnectUI.wallet?.account;
+            if (account) {
+                walletAddress = account.address;
+                console.log('TON wallet connected:', walletAddress);
+            }
+        }).catch(err => {
+            console.log('No previous connection:', err);
+        });
+        
+        tonConnectUI.onStatusChange((wallet) => {
+            if (wallet) {
+                walletAddress = wallet.account.address;
+                console.log('TON wallet connected:', walletAddress);
+            } else {
+                walletAddress = null;
+                console.log('TON wallet disconnected');
+            }
+        });
+    } catch (error) {
+        console.error('Error initializing TON Connect (Top):', error);
+    }
+}
+
 function initTONConnectExplorer() {
     // Check if TON Connect UI is loaded
     if (typeof window.TON_CONNECT_UI === 'undefined' || !window.TON_CONNECT_UI.TonConnectUI) {
@@ -845,11 +895,11 @@ function init() {
     // Setup egg tap handler (Notcoin style)
     setupEggTap();
     
-    // Initialize TON Connect (will work when Profile page is opened)
+    // Initialize TON Connect button (top right)
     // Wait for libraries to load
     setTimeout(() => {
-        if (document.getElementById('ton-connect-container')) {
-            initTONConnect();
+        if (document.getElementById('ton-connect-container-top')) {
+            initTONConnectTop();
         }
     }, 1000);
     
