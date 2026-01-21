@@ -4,8 +4,9 @@ if (typeof window.Telegram !== 'undefined' && window.Telegram.WebApp) {
     tg = window.Telegram.WebApp;
     tg.ready();
     tg.expand();
-    tg.setHeaderColor('#ffffff');
-    tg.setBackgroundColor('#ffffff');
+    // TON/Notcoin style colors
+    tg.setHeaderColor('#0088cc');
+    tg.setBackgroundColor('#0088cc');
 }
 
 // Get user ID from Telegram or URL
@@ -530,6 +531,103 @@ function setupSubscribeButton() {
 
 // Buy Eggs - removed for beta (unlimited eggs)
 
+// Egg Tap Handler (Notcoin Style)
+function setupEggTap() {
+    const eggContainer = document.getElementById('egg-tap-container');
+    const eggImage = document.getElementById('egg-animation');
+    
+    if (!eggContainer || !eggImage) return;
+    
+    let tapCooldown = false;
+    let tapCount = 0;
+    
+    // Create tap effect particles
+    function createTapParticle(x, y) {
+        const particle = document.createElement('div');
+        particle.style.position = 'absolute';
+        particle.style.left = x + 'px';
+        particle.style.top = y + 'px';
+        particle.style.width = '8px';
+        particle.style.height = '8px';
+        particle.style.borderRadius = '50%';
+        particle.style.background = 'radial-gradient(circle, #ffd700, #ff8c00)';
+        particle.style.pointerEvents = 'none';
+        particle.style.zIndex = '1000';
+        particle.style.boxShadow = '0 0 10px rgba(255, 215, 0, 0.8)';
+        
+        eggContainer.appendChild(particle);
+        
+        // Animate particle
+        const angle = Math.random() * Math.PI * 2;
+        const distance = 50 + Math.random() * 30;
+        const duration = 500 + Math.random() * 300;
+        
+        particle.animate([
+            {
+                transform: 'translate(0, 0) scale(1)',
+                opacity: 1
+            },
+            {
+                transform: `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px) scale(0)`,
+                opacity: 0
+            }
+        ], {
+            duration: duration,
+            easing: 'ease-out'
+        }).onfinish = () => {
+            particle.remove();
+        };
+    }
+    
+    // Handle tap/click
+    function handleTap(event) {
+        if (tapCooldown) return;
+        
+        tapCooldown = true;
+        tapCount++;
+        
+        // Get tap position
+        const rect = eggContainer.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        
+        // Create particles
+        for (let i = 0; i < 5; i++) {
+            setTimeout(() => {
+                createTapParticle(x + (Math.random() - 0.5) * 40, y + (Math.random() - 0.5) * 40);
+            }, i * 20);
+        }
+        
+        // Add tap animation class
+        eggImage.style.transform = 'scale(0.9)';
+        setTimeout(() => {
+            eggImage.style.transform = '';
+        }, 100);
+        
+        // Haptic feedback (if available)
+        if (tg && tg.HapticFeedback) {
+            tg.HapticFeedback.impactOccurred('light');
+        }
+        
+        // Reset cooldown
+        setTimeout(() => {
+            tapCooldown = false;
+        }, 150);
+        
+        // Optional: Trigger stats refresh on tap
+        if (tapCount % 10 === 0) {
+            loadStats();
+        }
+    }
+    
+    // Add event listeners
+    eggContainer.addEventListener('click', handleTap);
+    eggContainer.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        handleTap(e.touches[0] || e);
+    }, { passive: false });
+}
+
 // Share Button
 function setupShareButton() {
     const shareBtn = document.getElementById('share-egg-btn');
@@ -541,84 +639,45 @@ function setupShareButton() {
         const botUsername = 'tohatchbot';
         
         if (tg) {
-            // Используем switchInlineQuery для открытия inline query с текстом "egg"
-            // Это откроет inline query бота с текстом, без ссылки
-            if (tg.switchInlineQuery) {
-                // Правильный формат: switchInlineQuery(query, options)
-                // query - текст для inline query, options - опции (может быть пустым объектом)
-                try {
-                    tg.switchInlineQuery('egg', {});
-                } catch (e) {
-                    // Если не работает с опциями, пробуем без них
-                    try {
-                        tg.switchInlineQuery('egg');
-                    } catch (e2) {
-                        console.error('switchInlineQuery failed:', e2);
-                        // Fallback на копирование в буфер обмена
-                        navigator.clipboard.writeText(message).then(() => {
-                            if (tg.showAlert) {
-                                tg.showAlert('Message "@tohatchbot egg" copied to clipboard! Paste it in any chat.');
-                            } else {
-                                alert('Message "@tohatchbot egg" copied to clipboard! Paste it in any chat.');
-                            }
-                        }).catch(err => {
-                            console.error('Error copying to clipboard:', err);
-                            if (tg.showAlert) {
-                                tg.showAlert('Please copy this message manually: @tohatchbot egg');
-                            } else {
-                                alert('Please copy this message manually: @tohatchbot egg');
-                            }
-                        });
-                    }
-                }
-            } else if (tg.openTelegramLink) {
-                // Fallback: используем deep link для открытия inline query
-                // НО: не добавляем URL в сообщение, только открываем inline query
-                // Формат для inline query: https://t.me/botusername?start=inline_query
-                // Но лучше использовать switchInlineQuery, если доступен
-                const inlineQueryUrl = `https://t.me/${botUsername}?start=egg`;
-                tg.openTelegramLink(inlineQueryUrl);
-            } else {
-                // Последний fallback: копируем текст в буфер обмена
-                navigator.clipboard.writeText(message).then(() => {
-                    if (tg.showAlert) {
-                        tg.showAlert('Message "@tohatchbot egg" copied to clipboard! Paste it in any chat.');
-                    } else {
-                        alert('Message "@tohatchbot egg" copied to clipboard! Paste it in any chat.');
-                    }
-                }).catch(err => {
-                    console.error('Error copying to clipboard:', err);
-                    if (tg.showAlert) {
-                        tg.showAlert('Please copy this message manually: @tohatchbot egg');
-                    } else {
-                        alert('Please copy this message manually: @tohatchbot egg');
-                    }
+            // Используем Telegram WebApp API для открытия бота с текстом сообщения
+            // Формируем ссылку для отправки сообщения боту напрямую через share
+            // Используем специальный формат для пересылки сообщения
+            const shareUrl = `https://t.me/share/url?url=${encodeURIComponent('https://t.me/' + botUsername)}&text=${encodeURIComponent(message)}`;
+            
+            // Используем openTelegramLink для открытия в Telegram приложении
+            if (tg.openTelegramLink) {
+                tg.openTelegramLink(shareUrl);
+            } else if (tg.openLink) {
+                // Fallback на openLink
+                tg.openLink(shareUrl, {
+                    try_instant_view: false
                 });
+            } else {
+                // Последний fallback
+                window.open(shareUrl, '_blank');
             }
         } else {
-            // Fallback для обычного браузера - копируем текст в буфер обмена
-            if (navigator.clipboard && navigator.clipboard.writeText) {
+            // Fallback для обычного браузера
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Send Egg',
+                    text: message,
+                    url: `https://t.me/${botUsername}`
+                }).catch(err => {
+                    console.error('Error sharing:', err);
+                    // Копируем текст в буфер обмена как fallback
+                    navigator.clipboard.writeText(message).then(() => {
+                        alert('Message "@tohatchbot egg" copied to clipboard!');
+                    });
+                });
+            } else {
+                // Копируем текст в буфер обмена
                 navigator.clipboard.writeText(message).then(() => {
-                    alert('Message "@tohatchbot egg" copied to clipboard! Paste it in any chat.');
+                    alert('Message "@tohatchbot egg" copied to clipboard!');
                 }).catch(err => {
                     console.error('Error copying to clipboard:', err);
                     alert('Please copy this message manually: @tohatchbot egg');
                 });
-            } else {
-                // Fallback для старых браузеров
-                const textArea = document.createElement('textarea');
-                textArea.value = message;
-                textArea.style.position = 'fixed';
-                textArea.style.opacity = '0';
-                document.body.appendChild(textArea);
-                textArea.select();
-                try {
-                    document.execCommand('copy');
-                    alert('Message "@tohatchbot egg" copied to clipboard! Paste it in any chat.');
-                } catch (err) {
-                    alert('Please copy this message manually: @tohatchbot egg');
-                }
-                document.body.removeChild(textArea);
             }
         }
     });
@@ -678,76 +737,6 @@ async function loadProfile() {
     }
 }
 
-// Handle referral parameter from URL or Telegram start_param
-async function handleReferral() {
-    const userId = getUserID();
-    if (!userId) {
-        console.log('No user ID, skipping referral handling');
-        return;
-    }
-    
-    // Получаем параметр startapp из Telegram WebApp или из URL
-    let referrerId = null;
-    
-    // Сначала пробуем получить из Telegram WebApp start_param (когда открыто через ?startapp=)
-    if (tg && tg.initDataUnsafe?.start_param) {
-        referrerId = tg.initDataUnsafe.start_param;
-        console.log('Got referrer from Telegram start_param:', referrerId);
-    }
-    
-    // Если не получили из start_param, пробуем из URL параметров
-    if (!referrerId) {
-        const urlParams = new URLSearchParams(window.location.search);
-        referrerId = urlParams.get('referral') || urlParams.get('ref') || urlParams.get('startapp');
-        if (referrerId) {
-            console.log('Got referrer from URL parameter:', referrerId);
-        }
-    }
-    
-    if (!referrerId) {
-        console.log('No referrer parameter found (checked start_param and URL)');
-        return;
-    }
-    
-    try {
-        const referrerIdInt = parseInt(referrerId);
-        if (isNaN(referrerIdInt)) {
-            console.error('Invalid referrer ID:', referrerId);
-            return;
-        }
-        
-        // Check if user already has a referrer
-        // We'll check this by trying to set the referrer via API
-        console.log(`Attempting to set referrer ${referrerIdInt} for user ${userId}`);
-        
-        const response = await fetch(`${BOT_API_URL}/api/referral/set`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({
-                user_id: userId,
-                referrer_id: referrerIdInt
-            })
-        });
-        
-        if (response.ok) {
-            const data = await response.json();
-            if (data.success) {
-                console.log(`Successfully set referrer ${referrerIdInt} for user ${userId}`);
-            } else {
-                console.log(`User already has referrer: ${data.existing_referrer}`);
-            }
-        } else {
-            const errorData = await response.json();
-            console.error('Failed to set referrer:', errorData);
-        }
-    } catch (error) {
-        console.error('Error handling referral:', error);
-    }
-}
-
 // Initialize on page load
 function init() {
     console.log('Initializing app...');
@@ -766,8 +755,8 @@ function init() {
     // Setup share button
     setupShareButton();
     
-    // Handle referral parameter (must be done early)
-    handleReferral();
+    // Setup egg tap handler (Notcoin style)
+    setupEggTap();
     
     // Initialize TON Connect (will work when Profile page is opened)
     // Wait for libraries to load
@@ -872,72 +861,14 @@ function displayEggResult(egg) {
     const resultDiv = document.getElementById('explorer-search-result');
     if (!resultDiv) return;
     
-    const isMulti = egg.is_multi || false;
-    const hatchedStatus = (isMulti ? egg.hatched_count > 0 : egg.hatched_by) ? 'hatched' : 'pending';
-    const hatchedText = (isMulti ? egg.hatched_count > 0 : egg.hatched_by) ? 'Hatched' : 'Pending';
+    const hatchedStatus = egg.hatched_by ? 'hatched' : 'pending';
+    const hatchedText = egg.hatched_by ? 'Hatched' : 'Pending';
     
     const timestampSent = egg.timestamp_sent ? new Date(egg.timestamp_sent).toLocaleString('en-US') : 'Unknown';
     const timestampHatched = egg.timestamp_hatched ? new Date(egg.timestamp_hatched).toLocaleString('en-US') : '—';
     
     const timeAgoSent = egg.timestamp_sent ? getTimeAgo(new Date(egg.timestamp_sent)) : '';
     const timeAgoHatched = egg.timestamp_hatched ? getTimeAgo(new Date(egg.timestamp_hatched)) : '';
-
-    // Формируем информацию о вылупивших для multi egg
-    let hatchedBySection = '';
-    if (isMulti) {
-        if (egg.hatched_by_list && egg.hatched_by_list.length > 0) {
-            const hatchedByList = egg.hatched_by_list.map(user => {
-                const username = user.username ? `@${user.username}` : `User ID: ${user.user_id}`;
-                const avatar = user.avatar ? `<img src="${user.avatar}" class="user-avatar" onerror="this.style.display='none'">` : '<div class="user-avatar-placeholder"></div>';
-                const onClick = user.username ? `searchUserByUsername('${user.username}')` : `viewUserEggs(${user.user_id}, '')`;
-                return `
-                    <div class="hatched-by-item">
-                        <div class="info-value-with-avatar">
-                            ${avatar}
-                            <span class="username-link" onclick="event.stopPropagation(); ${onClick}();">
-                                ${username}
-                            </span>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-            
-            hatchedBySection = `
-                <div class="info-section">
-                    <div class="info-label">Hatched By (${egg.hatched_count}/${egg.max_hatches})</div>
-                    <div class="hatched-by-list">
-                        ${hatchedByList}
-                    </div>
-                </div>
-            `;
-        } else {
-            hatchedBySection = `
-                <div class="info-section">
-                    <div class="info-label">Hatched By</div>
-                    <div class="info-value">Not hatched yet (0/${egg.max_hatches})</div>
-                </div>
-            `;
-        }
-    } else if (egg.hatched_by) {
-        hatchedBySection = `
-            <div class="info-section">
-                <div class="info-label">Hatched By</div>
-                <div class="info-value-with-avatar">
-                    ${egg.hatched_by_avatar ? `<img src="${egg.hatched_by_avatar}" class="user-avatar" onerror="this.style.display='none'">` : '<div class="user-avatar-placeholder"></div>'}
-                    ${egg.hatched_by_username ? `
-                    <span class="username-link" onclick="event.stopPropagation(); searchUserByUsername('${egg.hatched_by_username}');">
-                        @${egg.hatched_by_username}
-                    </span>
-                    ` : `
-                    <span class="username-link" onclick="event.stopPropagation(); viewUserEggs(${egg.hatched_by}, '');">
-                        User ID: ${egg.hatched_by}
-                    </span>
-                    `}
-                </div>
-                <div class="info-subvalue">${timestampHatched}${timeAgoHatched ? ` (${timeAgoHatched})` : ''}</div>
-            </div>
-        `;
-    }
 
     resultDiv.innerHTML = `
         <div class="egg-detail-card">
@@ -946,9 +877,8 @@ function displayEggResult(egg) {
                     <div id="egg-avatar-animation" class="egg-avatar-animation"></div>
                 </div>
                 <div class="egg-detail-title">
-                    <h3>${isMulti ? 'Multi ' : ''}Egg #${egg.egg_id.substring(0, 8)}...</h3>
+                    <h3>Egg #${egg.egg_id.substring(0, 8)}...</h3>
                     <span class="egg-status-badge ${hatchedStatus}">${hatchedText}</span>
-                    ${isMulti ? `<span class="egg-status-badge multi">Multi (${egg.max_hatches})</span>` : ''}
                 </div>
             </div>
             
@@ -962,7 +892,6 @@ function displayEggResult(egg) {
                     <div class="info-label">Status</div>
                     <div class="info-value">
                         <span class="status-badge ${hatchedStatus}">${hatchedText}</span>
-                        ${isMulti ? `<span class="status-badge multi">${egg.hatched_count}/${egg.max_hatches} hatched</span>` : ''}
                     </div>
                 </div>
                 
@@ -983,7 +912,24 @@ function displayEggResult(egg) {
                     <div class="info-subvalue">${timestampSent}${timeAgoSent ? ` (${timeAgoSent})` : ''}</div>
                 </div>
                 
-                ${hatchedBySection}
+                ${egg.hatched_by ? `
+                <div class="info-section">
+                    <div class="info-label">Hatched By</div>
+                    <div class="info-value-with-avatar">
+                        ${egg.hatched_by_avatar ? `<img src="${egg.hatched_by_avatar}" class="user-avatar" onerror="this.style.display='none'">` : '<div class="user-avatar-placeholder"></div>'}
+                        ${egg.hatched_by_username ? `
+                        <span class="username-link" onclick="event.stopPropagation(); searchUserByUsername('${egg.hatched_by_username}');">
+                            @${egg.hatched_by_username}
+                        </span>
+                        ` : `
+                        <span class="username-link" onclick="event.stopPropagation(); viewUserEggs(${egg.hatched_by}, '');">
+                            User ID: ${egg.hatched_by}
+                        </span>
+                        `}
+                    </div>
+                    <div class="info-subvalue">${timestampHatched}${timeAgoHatched ? ` (${timeAgoHatched})` : ''}</div>
+                </div>
+                ` : ''}
                 
                 <div class="info-section">
                     <div class="info-label">Transaction Hash</div>
