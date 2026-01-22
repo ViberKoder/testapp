@@ -126,7 +126,7 @@ html, body {
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
-    background: #f8f8f8; /* TON Wallet background */
+    background: #ffffff; /* Pure white background */
     color: var(--text-primary);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -136,7 +136,7 @@ body {
     line-height: 1.5;
 }
 
-/* ========== BACKGROUND (TON Wallet Style - Light Gray) ========== */
+/* ========== BACKGROUND (Pure White) ========== */
 .background-container {
     position: fixed;
     top: 0;
@@ -145,7 +145,7 @@ body {
     height: 100%;
     z-index: 0;
     overflow: hidden;
-    background: #f8f8f8; /* TON Wallet light gray background */
+    background: #ffffff; /* Pure white background */
 }
 
 .background-image {
@@ -313,7 +313,138 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 10;
-    margin-top: -200px; /* Position above egg (adjust based on egg size) */
+    margin-top: -280px; /* Position above top users */
+}
+
+/* ========== TOP USERS SECTION ========== */
+.top-users-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    margin-top: -180px; /* Position between points counter and egg */
+    width: 90%;
+    max-width: 400px;
+    background: #ffffff;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    padding: var(--spacing-md);
+}
+
+.top-users-tabs {
+    display: flex;
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-md);
+    background: #f4f4f5;
+    border-radius: var(--radius-md);
+    padding: 4px;
+}
+
+.top-users-tab {
+    flex: 1;
+    padding: 8px 12px;
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 600;
+    color: #707579;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+.top-users-tab.active {
+    background: #ffffff;
+    color: var(--ton-primary);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.top-users-tab:hover {
+    color: var(--ton-primary);
+}
+
+.top-users-list {
+    max-height: 120px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.top-user-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-xs) 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.top-user-item:last-child {
+    border-bottom: none;
+}
+
+.top-user-rank {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 700;
+    color: #707579;
+    flex-shrink: 0;
+}
+
+.top-user-item:nth-child(1) .top-user-rank {
+    background: #ffd700;
+    color: #000000;
+}
+
+.top-user-item:nth-child(2) .top-user-rank {
+    background: #c0c0c0;
+    color: #000000;
+}
+
+.top-user-item:nth-child(3) .top-user-rank {
+    background: #cd7f32;
+    color: #ffffff;
+}
+
+.top-user-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.top-user-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ton-text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.top-user-value {
+    font-size: 11px;
+    color: var(--ton-text-secondary);
+}
+
+.top-user-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-full);
+    flex-shrink: 0;
+    background: var(--ton-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
 }
 
 .points-counter {
@@ -893,6 +1024,20 @@ body {
     
     .page-header {
         margin-bottom: var(--spacing-lg);
+    }
+    
+    .top-users-container {
+        width: 95%;
+        padding: var(--spacing-sm);
+        margin-top: -160px;
+    }
+    
+    .top-users-list {
+        max-height: 100px;
+    }
+    
+    .points-counter-container {
+        margin-top: -240px;
     }
     
     /* Explorer mobile optimization */

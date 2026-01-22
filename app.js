@@ -77,6 +77,101 @@ function animateCounter(element, startValue, endValue, duration = 1000) {
 // Store current points value
 let currentPointsValue = 0;
 
+// Current active top users tab
+let currentTopUsersTab = 'points';
+
+// Load top users
+async function loadTopUsers(tab = 'points') {
+    const topUsersListEl = document.getElementById('top-users-list');
+    if (!topUsersListEl) {
+        return;
+    }
+    
+    currentTopUsersTab = tab;
+    
+    // Show loading
+    topUsersListEl.innerHTML = '<div class="loading">Loading...</div>';
+    
+    try {
+        // Determine API endpoint based on tab
+        let endpoint = '';
+        switch(tab) {
+            case 'points':
+                endpoint = `${BOT_API_URL}/api/top/points`;
+                break;
+            case 'sent':
+                endpoint = `${BOT_API_URL}/api/top/sent`;
+                break;
+            case 'hatched':
+                endpoint = `${BOT_API_URL}/api/top/hatched`;
+                break;
+            default:
+                endpoint = `${BOT_API_URL}/api/top/points`;
+        }
+        
+        console.log(`Fetching top users from: ${endpoint}`);
+        const response = await fetch(endpoint, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+            }
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            console.log('Top users data:', data);
+            
+            // Render top users
+            if (data.users && Array.isArray(data.users) && data.users.length > 0) {
+                topUsersListEl.innerHTML = data.users.map((user, index) => {
+                    const rank = index + 1;
+                    const value = tab === 'points' ? user.points || 0 :
+                                  tab === 'sent' ? user.eggs_sent || 0 :
+                                  user.eggs_hatched || 0;
+                    const username = user.username ? `@${user.username}` : `User ${user.user_id || rank}`;
+                    const firstName = user.first_name || '';
+                    const displayName = firstName || username;
+                    
+                    return `
+                        <div class="top-user-item">
+                            <div class="top-user-rank">${rank}</div>
+                            <div class="top-user-avatar">${displayName.charAt(0).toUpperCase()}</div>
+                            <div class="top-user-info">
+                                <div class="top-user-name">${displayName}</div>
+                                <div class="top-user-value">${value.toLocaleString()} ${tab === 'points' ? 'points' : tab === 'sent' ? 'sent' : 'hatched'}</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } else {
+                topUsersListEl.innerHTML = '<div class="loading">No data available</div>';
+            }
+        } else {
+            console.error('Failed to load top users:', response.status);
+            topUsersListEl.innerHTML = '<div class="loading">Failed to load</div>';
+        }
+    } catch (error) {
+        console.error('Error loading top users:', error);
+        topUsersListEl.innerHTML = '<div class="loading">Error loading</div>';
+    }
+}
+
+// Setup top users tabs
+function setupTopUsersTabs() {
+    const tabs = document.querySelectorAll('.top-users-tab');
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            // Remove active class from all tabs
+            tabs.forEach(t => t.classList.remove('active'));
+            // Add active class to clicked tab
+            tab.classList.add('active');
+            // Load data for selected tab
+            const tabName = tab.dataset.tab;
+            loadTopUsers(tabName);
+        });
+    });
+}
+
 // Load statistics and update points
 async function loadStats() {
     const counterEl = document.getElementById('points-counter');
@@ -946,6 +1041,9 @@ function init() {
     // Setup egg tap handler (Notcoin style)
     setupEggTap();
     
+    // Setup top users tabs
+    setupTopUsersTabs();
+    
     // Initialize TON Connect button (top right)
     // Wait for libraries to load
     setTimeout(() => {
@@ -956,6 +1054,7 @@ function init() {
     
     // Load stats
     loadStats();
+    loadTopUsers('points'); // Load top users by points initially
     
     // Refresh stats every 30 seconds
     setInterval(loadStats, 30000);

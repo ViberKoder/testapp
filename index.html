@@ -31,6 +31,18 @@
                 <div class="points-counter" id="points-counter">0</div>
             </div>
             
+            <!-- Top Users Section -->
+            <div class="top-users-container" id="top-users-container">
+                <div class="top-users-tabs">
+                    <button class="top-users-tab active" data-tab="points">Points</button>
+                    <button class="top-users-tab" data-tab="sent">Sent</button>
+                    <button class="top-users-tab" data-tab="hatched">Hatched</button>
+                </div>
+                <div class="top-users-list" id="top-users-list">
+                    <div class="loading">Loading...</div>
+                </div>
+            </div>
+            
             <!-- Available Eggs Counter (Top Right) -->
             <div class="eggs-available-container">
                 <div class="eggs-available-icon">
@@ -80,11 +92,11 @@
                         </div>
                     </div>
                     
-                    <!-- Referral Tasks -->
+                    <!-- Referral Info -->
                     <div class="task-section">
                         <h3 class="task-section-title">Referral</h3>
-                        <div class="task-card-placeholder">
-                            <div class="task-placeholder-text">Invite friends to earn more eggs</div>
+                        <div class="info-card">
+                            <p>Каждое яйцо пользователя уже реферальное. Никаких ссылок не нужно - просто отправляйте яйца через @tohatchbot, и они автоматически будут считаться реферальными!</p>
                         </div>
                     </div>
                 </div>
@@ -147,20 +159,6 @@
                     <div class="stat-card">
                         <div class="stat-label">Available Eggs</div>
                         <div class="stat-value" id="eggs-balance">0</div>
-                    </div>
-                </div>
-
-                <!-- Referrals Section -->
-                <div class="referrals-section">
-                    <div class="stat-row">
-                        <div class="stat-item">
-                            <div class="stat-label">Referrals</div>
-                            <div class="stat-value" id="referrals-count">0</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-label">Earned from Referrals</div>
-                            <div class="stat-value" id="referral-earnings">0</div>
-                        </div>
                     </div>
                 </div>
 
