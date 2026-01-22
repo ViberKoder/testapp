@@ -156,10 +156,12 @@ body {
     height: 100%;
     background: radial-gradient(
         ellipse at top right,
-        #ff8c42 0%,        /* Deep orange top-right */
-        #ffa366 30%,       /* Medium orange */
-        #ffb380 60%,       /* Light orange */
-        #ffd4b3 100%       /* Light yellowish-orange bottom-left */
+        #FF9D31 0%,        /* Orange */
+        #FFC15F 20%,       /* Light orange */
+        #FDD454 40%,       /* Yellow-orange */
+        #F5F07C 60%,       /* Light yellow */
+        #EDB940 80%,       /* Golden yellow */
+        #F7B855 100%       /* Peach yellow */
     );
     opacity: 1;
 }
