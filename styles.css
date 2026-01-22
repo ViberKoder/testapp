@@ -154,16 +154,13 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(
-        ellipse at top right,
-        #FF9D31 0%,        /* Orange */
-        #FFC15F 20%,       /* Light orange */
-        #FDD454 40%,       /* Yellow-orange */
-        #F5F07C 60%,       /* Light yellow */
-        #EDB940 80%,       /* Golden yellow */
-        #F7B855 100%       /* Peach yellow */
-    );
-    opacity: 1;
+    background-image: url('https://lime-gigantic-quelea-995.mypinata.cloud/ipfs/bafybeigbw5zehia6z7fhqmrwycgojx4zdig3li7z7edn3d6n2usr4jv4c4');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: saturate(1.2) blur(3px);
+    opacity: 0.35;
+    transform: scale(1.02);
 }
 
 /* ========== APP CONTAINER ========== */
