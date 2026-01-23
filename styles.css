@@ -316,7 +316,7 @@ body {
     margin-top: -280px; /* Position above top users */
 }
 
-/* ========== TOP USERS SECTION ========== */
+/* ========== TOP USERS SECTION (Notcoin Style) ========== */
 .top-users-container {
     position: absolute;
     top: 50%;
@@ -326,10 +326,58 @@ body {
     margin-top: -180px; /* Position between points counter and egg */
     width: 90%;
     max-width: 400px;
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-radius: var(--radius-lg);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     padding: var(--spacing-md);
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.top-users-container:active {
+    transform: translate(-50%, -50%) scale(0.98);
+}
+
+/* Your TOP Section */
+.your-top-section {
+    text-align: center;
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.your-top-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ton-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: var(--spacing-xs);
+}
+
+.your-top-rank {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--ton-text-primary);
+    margin-bottom: var(--spacing-xs);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+.your-top-league {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ton-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+}
+
+.your-top-league::before {
+    content: '🏆';
+    font-size: 16px;
 }
 
 .top-users-tabs {
@@ -369,6 +417,19 @@ body {
     max-height: 120px;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    position: relative;
+}
+
+.top-users-list::after {
+    content: 'Tap to view full leaderboard →';
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    color: var(--ton-text-secondary);
+    white-space: nowrap;
+    opacity: 0.7;
 }
 
 .top-user-item {
@@ -409,6 +470,160 @@ body {
 .top-user-item:nth-child(3) .top-user-rank {
     background: #cd7f32;
     color: #ffffff;
+}
+
+/* ========== LEADERBOARD PAGE ========== */
+.leaderboard-tabs {
+    display: flex;
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-lg);
+    background: #f4f4f5;
+    border-radius: var(--radius-md);
+    padding: 4px;
+}
+
+.leaderboard-tab {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 600;
+    color: #707579;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+.leaderboard-tab.active {
+    background: #ffffff;
+    color: var(--ton-primary);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.leaderboard-tab:hover {
+    color: var(--ton-primary);
+}
+
+.leaderboard-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.leaderboard-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    background: #ffffff;
+    border-radius: var(--radius-md);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    transition: all var(--transition-base);
+}
+
+.leaderboard-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.leaderboard-rank {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 700;
+    color: #707579;
+    flex-shrink: 0;
+}
+
+.leaderboard-item:nth-child(1) .leaderboard-rank {
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    color: #000000;
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+}
+
+.leaderboard-item:nth-child(2) .leaderboard-rank {
+    background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 100%);
+    color: #000000;
+    box-shadow: 0 2px 8px rgba(192, 192, 192, 0.3);
+}
+
+.leaderboard-item:nth-child(3) .leaderboard-rank {
+    background: linear-gradient(135deg, #cd7f32 0%, #e6a057 100%);
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(205, 127, 50, 0.3);
+}
+
+.leaderboard-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-full);
+    flex-shrink: 0;
+    background: var(--ton-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.leaderboard-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.leaderboard-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ton-text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.leaderboard-value {
+    font-size: 13px;
+    color: var(--ton-text-secondary);
+    font-weight: 500;
+}
+
+/* Back Button */
+.back-button {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: transparent;
+    border: none;
+    color: var(--ton-primary);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: var(--spacing-md);
+    transition: all var(--transition-base);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+.back-button:hover {
+    opacity: 0.8;
+}
+
+.back-button:active {
+    transform: scale(0.95);
+}
+
+.back-button span {
+    font-size: 20px;
+    line-height: 1;
 }
 
 .top-user-info {

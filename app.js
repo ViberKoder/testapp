@@ -80,6 +80,93 @@ let currentPointsValue = 0;
 // Current active top users tab
 let currentTopUsersTab = 'points';
 
+// League system based on rank
+function getLeagueByRank(rank) {
+    if (!rank || rank <= 0) return 'Chick';
+    
+    if (rank <= 100) return 'Diamond';
+    if (rank <= 500) return 'Platinum';
+    if (rank <= 1000) return 'Gold';
+    if (rank <= 5000) return 'Silver';
+    if (rank <= 10000) return 'Bronze';
+    if (rank <= 50000) return 'Copper';
+    if (rank <= 100000) return 'Iron';
+    return 'Chick';
+}
+
+// Format rank with suffix
+function formatRank(rank) {
+    if (!rank || rank <= 0) return '-';
+    
+    const lastDigit = rank % 10;
+    const lastTwoDigits = rank % 100;
+    
+    if (lastTwoDigits >= 11 && lastTwoDigits <= 13) {
+        return `${rank.toLocaleString()}th`;
+    }
+    
+    switch (lastDigit) {
+        case 1: return `${rank.toLocaleString()}st`;
+        case 2: return `${rank.toLocaleString()}nd`;
+        case 3: return `${rank.toLocaleString()}rd`;
+        default: return `${rank.toLocaleString()}th`;
+    }
+}
+
+// Load user rank
+async function loadUserRank(tab = 'points') {
+    const userId = getUserID();
+    if (!userId) {
+        document.getElementById('your-top-rank').textContent = '-';
+        document.getElementById('your-top-league').textContent = 'Chick';
+        return;
+    }
+    
+    try {
+        let endpoint = '';
+        switch(tab) {
+            case 'points':
+                endpoint = `${BOT_API_URL}/api/top/points/rank?user_id=${userId}`;
+                break;
+            case 'sent':
+                endpoint = `${BOT_API_URL}/api/top/sent/rank?user_id=${userId}`;
+                break;
+            case 'hatched':
+                endpoint = `${BOT_API_URL}/api/top/hatched/rank?user_id=${userId}`;
+                break;
+            default:
+                endpoint = `${BOT_API_URL}/api/top/points/rank?user_id=${userId}`;
+        }
+        
+        const response = await fetch(endpoint, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+            }
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            const rank = data.rank || data.position || null;
+            
+            if (rank) {
+                document.getElementById('your-top-rank').textContent = formatRank(rank);
+                document.getElementById('your-top-league').textContent = getLeagueByRank(rank);
+            } else {
+                document.getElementById('your-top-rank').textContent = '-';
+                document.getElementById('your-top-league').textContent = 'Chick';
+            }
+        } else {
+            document.getElementById('your-top-rank').textContent = '-';
+            document.getElementById('your-top-league').textContent = 'Chick';
+        }
+    } catch (error) {
+        console.error('Error loading user rank:', error);
+        document.getElementById('your-top-rank').textContent = '-';
+        document.getElementById('your-top-league').textContent = 'Chick';
+    }
+}
+
 // Load top users
 async function loadTopUsers(tab = 'points') {
     const topUsersListEl = document.getElementById('top-users-list');
@@ -146,6 +233,9 @@ async function loadTopUsers(tab = 'points') {
             } else {
                 topUsersListEl.innerHTML = '<div class="loading">No data available</div>';
             }
+            
+            // Load user rank
+            await loadUserRank(tab);
         } else {
             console.error('Failed to load top users:', response.status);
             topUsersListEl.innerHTML = '<div class="loading">Failed to load</div>';
@@ -156,18 +246,122 @@ async function loadTopUsers(tab = 'points') {
     }
 }
 
+// Load full leaderboard
+async function loadLeaderboard(tab = 'points') {
+    const leaderboardListEl = document.getElementById('leaderboard-list');
+    if (!leaderboardListEl) {
+        return;
+    }
+    
+    // Show loading
+    leaderboardListEl.innerHTML = '<div class="loading">Loading...</div>';
+    
+    try {
+        // Determine API endpoint based on tab
+        let endpoint = '';
+        switch(tab) {
+            case 'points':
+                endpoint = `${BOT_API_URL}/api/top/points?limit=100`;
+                break;
+            case 'sent':
+                endpoint = `${BOT_API_URL}/api/top/sent?limit=100`;
+                break;
+            case 'hatched':
+                endpoint = `${BOT_API_URL}/api/top/hatched?limit=100`;
+                break;
+            default:
+                endpoint = `${BOT_API_URL}/api/top/points?limit=100`;
+        }
+        
+        console.log(`Fetching leaderboard from: ${endpoint}`);
+        const response = await fetch(endpoint, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+            }
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            console.log('Leaderboard data:', data);
+            
+            // Render leaderboard
+            if (data.users && Array.isArray(data.users) && data.users.length > 0) {
+                leaderboardListEl.innerHTML = data.users.map((user, index) => {
+                    const rank = index + 1;
+                    const value = tab === 'points' ? user.points || 0 :
+                                  tab === 'sent' ? user.eggs_sent || 0 :
+                                  user.eggs_hatched || 0;
+                    const username = user.username ? `@${user.username}` : `User ${user.user_id || rank}`;
+                    const firstName = user.first_name || '';
+                    const displayName = firstName || username;
+                    
+                    return `
+                        <div class="leaderboard-item">
+                            <div class="leaderboard-rank">${rank}</div>
+                            <div class="leaderboard-avatar">${displayName.charAt(0).toUpperCase()}</div>
+                            <div class="leaderboard-info">
+                                <div class="leaderboard-name">${displayName}</div>
+                                <div class="leaderboard-value">${value.toLocaleString()} ${tab === 'points' ? 'points' : tab === 'sent' ? 'sent' : 'hatched'}</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } else {
+                leaderboardListEl.innerHTML = '<div class="loading">No data available</div>';
+            }
+        } else {
+            console.error('Failed to load leaderboard:', response.status);
+            leaderboardListEl.innerHTML = '<div class="loading">Failed to load</div>';
+        }
+    } catch (error) {
+        console.error('Error loading leaderboard:', error);
+        leaderboardListEl.innerHTML = '<div class="loading">Error loading</div>';
+    }
+}
+
 // Setup top users tabs
 function setupTopUsersTabs() {
     const tabs = document.querySelectorAll('.top-users-tab');
     tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
+        tab.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent triggering container click
             // Remove active class from all tabs
             tabs.forEach(t => t.classList.remove('active'));
             // Add active class to clicked tab
             tab.classList.add('active');
             // Load data for selected tab
             const tabName = tab.dataset.tab;
+            currentTopUsersTab = tabName;
             loadTopUsers(tabName);
+            loadUserRank(tabName); // Update user rank when switching tabs
+        });
+    });
+    
+    // Make top users container clickable to go to leaderboard
+    const topUsersContainer = document.getElementById('top-users-container');
+    if (topUsersContainer) {
+        topUsersContainer.addEventListener('click', (e) => {
+            // Don't trigger if clicking on tabs
+            if (!e.target.closest('.top-users-tabs')) {
+                showPage('leaderboard-page');
+                loadLeaderboard(currentTopUsersTab);
+            }
+        });
+    }
+    
+    // Setup leaderboard tabs
+    const leaderboardTabs = document.querySelectorAll('.leaderboard-tab');
+    leaderboardTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            // Remove active class from all tabs
+            leaderboardTabs.forEach(t => t.classList.remove('active'));
+            // Add active class to clicked tab
+            tab.classList.add('active');
+            // Load data for selected tab
+            const tabName = tab.dataset.tab;
+            currentTopUsersTab = tabName;
+            loadLeaderboard(tabName);
         });
     });
 }
@@ -312,15 +506,22 @@ function showPage(pageId) {
     if (page) {
         page.classList.add('active');
         currentPage = pageId;
+        
+        // Load leaderboard if opening leaderboard page
+        if (pageId === 'leaderboard-page') {
+            loadLeaderboard(currentTopUsersTab);
+        }
     }
     
-    // Update nav items
-    document.querySelectorAll('.nav-item').forEach(item => {
-        item.classList.remove('active');
-        if (item.dataset.page === pageId) {
-            item.classList.add('active');
-        }
-    });
+    // Update nav items (only for main pages, not leaderboard)
+    if (pageId !== 'leaderboard-page') {
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.classList.remove('active');
+            if (item.dataset.page === pageId) {
+                item.classList.add('active');
+            }
+        });
+    }
     
     // Show/hide profile avatar button (only on home page)
     const profileAvatarBtn = document.getElementById('profile-avatar-btn');
@@ -1055,6 +1256,7 @@ function init() {
     // Load stats
     loadStats();
     loadTopUsers('points'); // Load top users by points initially
+    loadUserRank('points'); // Load user rank initially
     
     // Refresh stats every 30 seconds
     setInterval(loadStats, 30000);

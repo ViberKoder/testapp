@@ -33,12 +33,22 @@
             
             <!-- Top Users Section -->
             <div class="top-users-container" id="top-users-container">
+                <!-- Your TOP Section -->
+                <div class="your-top-section" id="your-top-section">
+                    <div class="your-top-label">Your TOP</div>
+                    <div class="your-top-rank" id="your-top-rank">-</div>
+                    <div class="your-top-league" id="your-top-league">-</div>
+                </div>
+                
+                <!-- Top Users Tabs -->
                 <div class="top-users-tabs">
                     <button class="top-users-tab active" data-tab="points">Points</button>
                     <button class="top-users-tab" data-tab="sent">Sent</button>
                     <button class="top-users-tab" data-tab="hatched">Hatched</button>
                 </div>
-                <div class="top-users-list" id="top-users-list">
+                
+                <!-- Top Users List (Clickable) -->
+                <div class="top-users-list" id="top-users-list" data-page="leaderboard-page">
                     <div class="loading">Loading...</div>
                 </div>
             </div>
@@ -96,7 +106,7 @@
                     <div class="task-section">
                         <h3 class="task-section-title">Referral</h3>
                         <div class="info-card">
-                            <p>Каждое яйцо пользователя уже реферальное. Никаких ссылок не нужно - просто отправляйте яйца через @tohatchbot, и они автоматически будут считаться реферальными!</p>
+                            <p>Every user's egg is already referral. No links needed - just send eggs through @tohatchbot, and they will automatically be counted as referrals!</p>
                         </div>
                     </div>
                 </div>
@@ -137,6 +147,28 @@
                             <div class="loading">Loading...</div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Leaderboard Page -->
+        <div class="page" id="leaderboard-page">
+            <div class="page-content">
+                <div class="page-header">
+                    <button class="back-button" onclick="showPage('home-page')">
+                        <span>←</span> Back
+                    </button>
+                    <h2 class="page-title">Leaderboard</h2>
+                </div>
+                
+                <div class="leaderboard-tabs">
+                    <button class="leaderboard-tab active" data-tab="points">Points</button>
+                    <button class="leaderboard-tab" data-tab="sent">Sent</button>
+                    <button class="leaderboard-tab" data-tab="hatched">Hatched</button>
+                </div>
+                
+                <div class="leaderboard-list" id="leaderboard-list">
+                    <div class="loading">Loading...</div>
                 </div>
             </div>
         </div>
