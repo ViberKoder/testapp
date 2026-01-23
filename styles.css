@@ -316,8 +316,8 @@ body {
     margin-top: -280px; /* Position above top users */
 }
 
-/* ========== TOP USERS SECTION (Notcoin Style) ========== */
-.top-users-container {
+/* ========== YOUR TOP SECTION (Notcoin Style) ========== */
+.your-top-container {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -326,68 +326,99 @@ body {
     margin-top: -180px; /* Position between points counter and egg */
     width: 90%;
     max-width: 400px;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-radius: var(--radius-lg);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    padding: var(--spacing-md);
     cursor: pointer;
     transition: all var(--transition-base);
 }
 
-.top-users-container:active {
+.your-top-container:active {
     transform: translate(-50%, -50%) scale(0.98);
 }
 
-/* Your TOP Section */
 .your-top-section {
     text-align: center;
-    margin-bottom: var(--spacing-md);
-    padding-bottom: var(--spacing-md);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transition: all var(--transition-base);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+/* League gradients */
+.your-top-section.league-chick {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(250, 250, 250, 0.95) 100%);
+}
+
+.your-top-section.league-iron {
+    background: linear-gradient(135deg, rgba(200, 200, 200, 0.95) 0%, rgba(180, 180, 180, 0.95) 100%);
+}
+
+.your-top-section.league-copper {
+    background: linear-gradient(135deg, rgba(184, 115, 51, 0.95) 0%, rgba(160, 90, 40, 0.95) 100%);
+}
+
+.your-top-section.league-bronze {
+    background: linear-gradient(135deg, rgba(205, 127, 50, 0.95) 0%, rgba(180, 100, 30, 0.95) 100%);
+}
+
+.your-top-section.league-silver {
+    background: linear-gradient(135deg, rgba(192, 192, 192, 0.95) 0%, rgba(170, 170, 170, 0.95) 100%);
+}
+
+.your-top-section.league-gold {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.95) 0%, rgba(255, 200, 0, 0.95) 100%);
+}
+
+.your-top-section.league-platinum {
+    background: linear-gradient(135deg, rgba(229, 228, 226, 0.95) 0%, rgba(200, 200, 200, 0.95) 100%);
+}
+
+.your-top-section.league-diamond {
+    background: linear-gradient(135deg, rgba(51, 144, 236, 0.95) 0%, rgba(30, 100, 200, 0.95) 100%);
 }
 
 .your-top-label {
     font-size: 12px;
     font-weight: 600;
-    color: var(--ton-text-secondary);
+    color: rgba(0, 0, 0, 0.6);
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    margin-bottom: var(--spacing-xs);
+    margin-bottom: var(--spacing-sm);
 }
 
 .your-top-rank {
-    font-size: 24px;
+    font-size: 28px;
     font-weight: 700;
-    color: var(--ton-text-primary);
-    margin-bottom: var(--spacing-xs);
+    color: #000000;
+    margin-bottom: var(--spacing-sm);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .your-top-league {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
-    color: var(--ton-primary);
     display: flex;
     align-items: center;
     justify-content: center;
     gap: var(--spacing-xs);
+    color: #000000;
 }
 
-.your-top-league::before {
-    content: '🏆';
-    font-size: 16px;
-}
-
-.top-users-tabs {
+.trophy-icon-animation {
+    width: 24px;
+    height: 24px;
     display: flex;
-    gap: var(--spacing-xs);
-    margin-bottom: var(--spacing-md);
-    background: #f4f4f5;
-    border-radius: var(--radius-md);
-    padding: 4px;
+    align-items: center;
+    justify-content: center;
 }
+
+.league-text {
+    text-transform: capitalize;
+}
+
+/* Removed top-users-tabs from home page - now only in leaderboard */
 
 .top-users-tab {
     flex: 1;
@@ -413,64 +444,7 @@ body {
     color: var(--ton-primary);
 }
 
-.top-users-list {
-    max-height: 120px;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    position: relative;
-}
-
-.top-users-list::after {
-    content: 'Tap to view full leaderboard →';
-    position: absolute;
-    bottom: -20px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 11px;
-    color: var(--ton-text-secondary);
-    white-space: nowrap;
-    opacity: 0.7;
-}
-
-.top-user-item {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    padding: var(--spacing-xs) 0;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.top-user-item:last-child {
-    border-bottom: none;
-}
-
-.top-user-rank {
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--radius-sm);
-    font-size: 12px;
-    font-weight: 700;
-    color: #707579;
-    flex-shrink: 0;
-}
-
-.top-user-item:nth-child(1) .top-user-rank {
-    background: #ffd700;
-    color: #000000;
-}
-
-.top-user-item:nth-child(2) .top-user-rank {
-    background: #c0c0c0;
-    color: #000000;
-}
-
-.top-user-item:nth-child(3) .top-user-rank {
-    background: #cd7f32;
-    color: #ffffff;
-}
+/* Top users list removed from home page - now only in leaderboard */
 
 /* ========== LEADERBOARD PAGE ========== */
 .leaderboard-tabs {
@@ -1241,14 +1215,13 @@ body {
         margin-bottom: var(--spacing-lg);
     }
     
-    .top-users-container {
+    .your-top-container {
         width: 95%;
-        padding: var(--spacing-sm);
         margin-top: -160px;
     }
     
-    .top-users-list {
-        max-height: 100px;
+    .your-top-section {
+        padding: var(--spacing-md);
     }
     
     .points-counter-container {

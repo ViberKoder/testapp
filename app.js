@@ -116,9 +116,17 @@ function formatRank(rank) {
 // Load user rank
 async function loadUserRank(tab = 'points') {
     const userId = getUserID();
+    const rankEl = document.getElementById('your-top-rank');
+    const leagueEl = document.getElementById('your-top-league');
+    const leagueTextEl = leagueEl ? leagueEl.querySelector('.league-text') : null;
+    const topSection = document.getElementById('your-top-section');
+    
     if (!userId) {
-        document.getElementById('your-top-rank').textContent = '-';
-        document.getElementById('your-top-league').textContent = 'Chick';
+        if (rankEl) rankEl.textContent = '-';
+        if (leagueTextEl) leagueTextEl.textContent = 'Chick';
+        if (topSection) {
+            topSection.className = 'your-top-section league-chick';
+        }
         return;
     }
     
@@ -150,101 +158,39 @@ async function loadUserRank(tab = 'points') {
             const rank = data.rank || data.position || null;
             
             if (rank) {
-                document.getElementById('your-top-rank').textContent = formatRank(rank);
-                document.getElementById('your-top-league').textContent = getLeagueByRank(rank);
+                const league = getLeagueByRank(rank);
+                if (rankEl) rankEl.textContent = formatRank(rank);
+                if (leagueTextEl) leagueTextEl.textContent = league;
+                
+                // Apply league gradient
+                if (topSection) {
+                    topSection.className = `your-top-section league-${league.toLowerCase()}`;
+                }
             } else {
-                document.getElementById('your-top-rank').textContent = '-';
-                document.getElementById('your-top-league').textContent = 'Chick';
+                if (rankEl) rankEl.textContent = '-';
+                if (leagueTextEl) leagueTextEl.textContent = 'Chick';
+                if (topSection) {
+                    topSection.className = 'your-top-section league-chick';
+                }
             }
         } else {
-            document.getElementById('your-top-rank').textContent = '-';
-            document.getElementById('your-top-league').textContent = 'Chick';
+            if (rankEl) rankEl.textContent = '-';
+            if (leagueTextEl) leagueTextEl.textContent = 'Chick';
+            if (topSection) {
+                topSection.className = 'your-top-section league-chick';
+            }
         }
     } catch (error) {
         console.error('Error loading user rank:', error);
-        document.getElementById('your-top-rank').textContent = '-';
-        document.getElementById('your-top-league').textContent = 'Chick';
+        if (rankEl) rankEl.textContent = '-';
+        if (leagueTextEl) leagueTextEl.textContent = 'Chick';
+        if (topSection) {
+            topSection.className = 'your-top-section league-chick';
+        }
     }
 }
 
-// Load top users
-async function loadTopUsers(tab = 'points') {
-    const topUsersListEl = document.getElementById('top-users-list');
-    if (!topUsersListEl) {
-        return;
-    }
-    
-    currentTopUsersTab = tab;
-    
-    // Show loading
-    topUsersListEl.innerHTML = '<div class="loading">Loading...</div>';
-    
-    try {
-        // Determine API endpoint based on tab
-        let endpoint = '';
-        switch(tab) {
-            case 'points':
-                endpoint = `${BOT_API_URL}/api/top/points`;
-                break;
-            case 'sent':
-                endpoint = `${BOT_API_URL}/api/top/sent`;
-                break;
-            case 'hatched':
-                endpoint = `${BOT_API_URL}/api/top/hatched`;
-                break;
-            default:
-                endpoint = `${BOT_API_URL}/api/top/points`;
-        }
-        
-        console.log(`Fetching top users from: ${endpoint}`);
-        const response = await fetch(endpoint, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-            }
-        });
-        
-        if (response.ok) {
-            const data = await response.json();
-            console.log('Top users data:', data);
-            
-            // Render top users
-            if (data.users && Array.isArray(data.users) && data.users.length > 0) {
-                topUsersListEl.innerHTML = data.users.map((user, index) => {
-                    const rank = index + 1;
-                    const value = tab === 'points' ? user.points || 0 :
-                                  tab === 'sent' ? user.eggs_sent || 0 :
-                                  user.eggs_hatched || 0;
-                    const username = user.username ? `@${user.username}` : `User ${user.user_id || rank}`;
-                    const firstName = user.first_name || '';
-                    const displayName = firstName || username;
-                    
-                    return `
-                        <div class="top-user-item">
-                            <div class="top-user-rank">${rank}</div>
-                            <div class="top-user-avatar">${displayName.charAt(0).toUpperCase()}</div>
-                            <div class="top-user-info">
-                                <div class="top-user-name">${displayName}</div>
-                                <div class="top-user-value">${value.toLocaleString()} ${tab === 'points' ? 'points' : tab === 'sent' ? 'sent' : 'hatched'}</div>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-            } else {
-                topUsersListEl.innerHTML = '<div class="loading">No data available</div>';
-            }
-            
-            // Load user rank
-            await loadUserRank(tab);
-        } else {
-            console.error('Failed to load top users:', response.status);
-            topUsersListEl.innerHTML = '<div class="loading">Failed to load</div>';
-        }
-    } catch (error) {
-        console.error('Error loading top users:', error);
-        topUsersListEl.innerHTML = '<div class="loading">Error loading</div>';
-    }
-}
+// Load top users - removed, now only load user rank on home page
 
 // Load full leaderboard
 async function loadLeaderboard(tab = 'points') {
@@ -320,33 +266,14 @@ async function loadLeaderboard(tab = 'points') {
     }
 }
 
-// Setup top users tabs
+// Setup top users section
 function setupTopUsersTabs() {
-    const tabs = document.querySelectorAll('.top-users-tab');
-    tabs.forEach(tab => {
-        tab.addEventListener('click', (e) => {
-            e.stopPropagation(); // Prevent triggering container click
-            // Remove active class from all tabs
-            tabs.forEach(t => t.classList.remove('active'));
-            // Add active class to clicked tab
-            tab.classList.add('active');
-            // Load data for selected tab
-            const tabName = tab.dataset.tab;
-            currentTopUsersTab = tabName;
-            loadTopUsers(tabName);
-            loadUserRank(tabName); // Update user rank when switching tabs
-        });
-    });
-    
-    // Make top users container clickable to go to leaderboard
-    const topUsersContainer = document.getElementById('top-users-container');
-    if (topUsersContainer) {
-        topUsersContainer.addEventListener('click', (e) => {
-            // Don't trigger if clicking on tabs
-            if (!e.target.closest('.top-users-tabs')) {
-                showPage('leaderboard-page');
-                loadLeaderboard(currentTopUsersTab);
-            }
+    // Make your top container clickable to go to leaderboard
+    const yourTopContainer = document.getElementById('your-top-container');
+    if (yourTopContainer) {
+        yourTopContainer.addEventListener('click', () => {
+            showPage('leaderboard-page');
+            loadLeaderboard(currentTopUsersTab);
         });
     }
     
@@ -490,6 +417,7 @@ async function loadAllAnimations() {
     await loadTGSAnimation('/egg.tgs', 'nav-home-icon');
     await loadTGSAnimation('/more.tgs', 'nav-more-icon');
     await loadTGSAnimation('/explorer-icon.tgs', 'nav-explorer-icon');
+    await loadTGSAnimation('/kub.tgs', 'trophy-icon');
 }
 
 // Navigation
@@ -1255,7 +1183,6 @@ function init() {
     
     // Load stats
     loadStats();
-    loadTopUsers('points'); // Load top users by points initially
     loadUserRank('points'); // Load user rank initially
     
     // Refresh stats every 30 seconds
