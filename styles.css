@@ -760,6 +760,48 @@ body {
     letter-spacing: -0.01em;
 }
 
+/* ========== REFERRAL SECTION (Top of More page) ========== */
+.referral-section-top {
+    background: #ffffff;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+}
+
+.referral-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.referral-stat-item {
+    text-align: center;
+}
+
+.referral-stat-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ton-text-secondary);
+    margin-bottom: var(--spacing-xs);
+}
+
+.referral-stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--ton-text-primary);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+.referral-info-text {
+    font-size: 11px;
+    color: rgba(0, 0, 0, 0.4);
+    line-height: 1.4;
+    text-align: center;
+    opacity: 0.6;
+}
+
 /* ========== TASK SECTIONS ========== */
 .tasks-sections {
     display: flex;

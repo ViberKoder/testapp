@@ -455,6 +455,7 @@ function showPage(pageId) {
     // Load page-specific data
     if (pageId === 'more-page') {
         loadTasks();
+        loadProfile(); // Load referral stats for More page
     } else if (pageId === 'profile-page') {
         loadProfile();
         // Initialize TON Connect when profile page is shown (if not already initialized)
