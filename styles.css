@@ -316,7 +316,7 @@ body {
     margin-top: -280px; /* Position above top users */
 }
 
-/* ========== YOUR TOP SECTION (Notcoin Style) ========== */
+/* ========== YOUR TOP SECTION (Simple Text Line) ========== */
 .your-top-container {
     position: absolute;
     top: 50%;
@@ -324,97 +324,56 @@ body {
     transform: translate(-50%, -50%);
     z-index: 10;
     margin-top: -180px; /* Position between points counter and egg */
-    width: 90%;
-    max-width: 400px;
     cursor: pointer;
     transition: all var(--transition-base);
 }
 
 .your-top-container:active {
-    transform: translate(-50%, -50%) scale(0.98);
+    opacity: 0.7;
 }
 
-.your-top-section {
-    text-align: center;
-    padding: var(--spacing-lg);
-    border-radius: var(--radius-lg);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    transition: all var(--transition-base);
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+.your-top-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
 }
 
-/* League gradients */
-.your-top-section.league-chick {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(250, 250, 250, 0.95) 100%);
+.trophy-icon-animation {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
 }
 
-.your-top-section.league-iron {
-    background: linear-gradient(135deg, rgba(200, 200, 200, 0.95) 0%, rgba(180, 180, 180, 0.95) 100%);
-}
-
-.your-top-section.league-copper {
-    background: linear-gradient(135deg, rgba(184, 115, 51, 0.95) 0%, rgba(160, 90, 40, 0.95) 100%);
-}
-
-.your-top-section.league-bronze {
-    background: linear-gradient(135deg, rgba(205, 127, 50, 0.95) 0%, rgba(180, 100, 30, 0.95) 100%);
-}
-
-.your-top-section.league-silver {
-    background: linear-gradient(135deg, rgba(192, 192, 192, 0.95) 0%, rgba(170, 170, 170, 0.95) 100%);
-}
-
-.your-top-section.league-gold {
-    background: linear-gradient(135deg, rgba(255, 215, 0, 0.95) 0%, rgba(255, 200, 0, 0.95) 100%);
-}
-
-.your-top-section.league-platinum {
-    background: linear-gradient(135deg, rgba(229, 228, 226, 0.95) 0%, rgba(200, 200, 200, 0.95) 100%);
-}
-
-.your-top-section.league-diamond {
-    background: linear-gradient(135deg, rgba(51, 144, 236, 0.95) 0%, rgba(30, 100, 200, 0.95) 100%);
-}
-
-.your-top-label {
-    font-size: 12px;
-    font-weight: 600;
-    color: rgba(0, 0, 0, 0.6);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: var(--spacing-sm);
+.chick-icon-animation {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
 }
 
 .your-top-rank {
-    font-size: 28px;
-    font-weight: 700;
+    font-size: 16px;
+    font-weight: 600;
     color: #000000;
-    margin-bottom: var(--spacing-sm);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.your-top-separator {
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.4);
+    margin: 0 2px;
 }
 
 .your-top-league {
     font-size: 16px;
     font-weight: 600;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--spacing-xs);
     color: #000000;
-}
-
-.trophy-icon-animation {
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.league-text {
     text-transform: capitalize;
 }
 
@@ -1216,12 +1175,7 @@ body {
     }
     
     .your-top-container {
-        width: 95%;
         margin-top: -160px;
-    }
-    
-    .your-top-section {
-        padding: var(--spacing-md);
     }
     
     .points-counter-container {

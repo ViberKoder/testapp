@@ -118,15 +118,10 @@ async function loadUserRank(tab = 'points') {
     const userId = getUserID();
     const rankEl = document.getElementById('your-top-rank');
     const leagueEl = document.getElementById('your-top-league');
-    const leagueTextEl = leagueEl ? leagueEl.querySelector('.league-text') : null;
-    const topSection = document.getElementById('your-top-section');
     
     if (!userId) {
         if (rankEl) rankEl.textContent = '-';
-        if (leagueTextEl) leagueTextEl.textContent = 'Chick';
-        if (topSection) {
-            topSection.className = 'your-top-section league-chick';
-        }
+        if (leagueEl) leagueEl.textContent = 'Chick';
         return;
     }
     
@@ -160,33 +155,19 @@ async function loadUserRank(tab = 'points') {
             if (rank) {
                 const league = getLeagueByRank(rank);
                 if (rankEl) rankEl.textContent = formatRank(rank);
-                if (leagueTextEl) leagueTextEl.textContent = league;
-                
-                // Apply league gradient
-                if (topSection) {
-                    topSection.className = `your-top-section league-${league.toLowerCase()}`;
-                }
+                if (leagueEl) leagueEl.textContent = league;
             } else {
                 if (rankEl) rankEl.textContent = '-';
-                if (leagueTextEl) leagueTextEl.textContent = 'Chick';
-                if (topSection) {
-                    topSection.className = 'your-top-section league-chick';
-                }
+                if (leagueEl) leagueEl.textContent = 'Chick';
             }
         } else {
             if (rankEl) rankEl.textContent = '-';
-            if (leagueTextEl) leagueTextEl.textContent = 'Chick';
-            if (topSection) {
-                topSection.className = 'your-top-section league-chick';
-            }
+            if (leagueEl) leagueEl.textContent = 'Chick';
         }
     } catch (error) {
         console.error('Error loading user rank:', error);
         if (rankEl) rankEl.textContent = '-';
-        if (leagueTextEl) leagueTextEl.textContent = 'Chick';
-        if (topSection) {
-            topSection.className = 'your-top-section league-chick';
-        }
+        if (leagueEl) leagueEl.textContent = 'Chick';
     }
 }
 
@@ -418,6 +399,7 @@ async function loadAllAnimations() {
     await loadTGSAnimation('/more.tgs', 'nav-more-icon');
     await loadTGSAnimation('/explorer-icon.tgs', 'nav-explorer-icon');
     await loadTGSAnimation('/kub.tgs', 'trophy-icon');
+    await loadTGSAnimation('/chick.tgs', 'chick-icon');
 }
 
 // Navigation
